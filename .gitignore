@@ -1,0 +1,13 @@
+/.bundle/
+/.idea/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+/Gemfile.lock
+/test/reports/
+.rakeTasks
+/influxdb-plugion-*.gem
