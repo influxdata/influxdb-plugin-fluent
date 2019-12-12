@@ -7,22 +7,22 @@
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/pulls)
 
-This repository contains the reference Ruby client for the InfluxDB 2.0.
+This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
-#### Note: This library is for use with InfluxDB 2.x. For connecting to InfluxDB 1.x instances, please use the [fluent-plugin-influxdb](https://github.com/fangli/fluent-plugin-influxdb) client.
+#### Note: This plugin is for use with InfluxDB 2.x. For InfluxDB 1.x instances, please use the [fluent-plugin-influxdb](https://github.com/fangli/fluent-plugin-influxdb) plufing.
 
 ## Installation
 
-The InfluxDB 2 client is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
+The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
 
 ### Install the Gem
 
-The client can be installed manually or with bundler.
+The plugin can be installed manually or with bundler.
 
-To install the client gem manually:
+To install the plugin gem manually:
 
 ```
-gem install influxdb-client --pre
+gem install influxdb-plugin-fluentd --pre
 ```
 
 ## Usage
