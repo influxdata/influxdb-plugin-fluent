@@ -18,13 +18,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-# require 'fluent/plugin/output'
-# require 'fluent/mixin'
+require 'fluent/plugin/output'
 
 module InfluxDB
   module Plugin
     module Fluentd
-      class InfluxDBOutput
+      # A buffered output plugin for Fluentd and InfluxDB 2
+      class InfluxDBOutput < Fluent::Plugin::Output
+        Fluent::Plugin.register_output('influxdb2', self)
       end
     end
   end
