@@ -20,5 +20,5 @@
 
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in influxdb-plugin-fluentd.gemspec
+# Specify your gem's dependencies in influxdb-plugin-fluent.gemspec
 gemspec

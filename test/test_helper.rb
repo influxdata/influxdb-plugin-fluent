@@ -28,7 +28,7 @@ end
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'fluent/test'
-require 'influxdb/plugin/fluentd'
+require 'influxdb/plugin/fluent'
 
 require 'minitest/autorun'
 require 'minitest/reporters'

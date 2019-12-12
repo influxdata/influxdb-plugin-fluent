@@ -20,26 +20,26 @@
 #
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'influxdb/plugin/fluentd/version'
+require 'influxdb/plugin/fluent/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'influxdb-plugin-fluentd'
+  spec.name          = 'influxdb-plugin-fluent'
   spec.version       = if ENV['CIRCLE_BUILD_NUM']
-                         "#{InfluxDB::Plugin::Fluentd::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}"
+                         "#{InfluxDB::Plugin::Fluent::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}"
                        else
-                         InfluxDB::Plugin::Fluentd::VERSION
+                         InfluxDB::Plugin::Fluent::VERSION
                        end
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
 
   spec.summary       = 'InfluxDB 2 output plugin for Fluentd'
   spec.description   = 'A buffered output plugin for Fluentd and InfluxDB 2'
-  spec.homepage      = 'https://github.com/bonitoo-io/influxdb-plugin-fluentd'
+  spec.homepage      = 'https://github.com/bonitoo-io/influxdb-plugin-fluent'
   spec.license       = 'MIT'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/bonitoo-io/influxdb-plugin-fluentd'
-  spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/bonitoo-io/influxdb-plugin-fluentd/master/CHANGELOG.md'
+  spec.metadata['source_code_uri'] = 'https://github.com/bonitoo-io/influxdb-plugin-fluent'
+  spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/bonitoo-io/influxdb-plugin-fluent/master/CHANGELOG.md'
 
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features|smoke)/})

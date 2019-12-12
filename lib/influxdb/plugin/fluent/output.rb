@@ -18,5 +18,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb/plugin/fluentd/version'
-require 'influxdb/plugin/fluentd/output'
+require 'fluent/plugin/output'
+
+# rubocop:disable Style/ClassAndModuleChildren
+module InfluxDB::Plugin::Fluent
+  # A buffered output plugin for Fluentd and InfluxDB 2
+  class InfluxDBOutput < Fluent::Plugin::Output
+    Fluent::Plugin.register_output('influxdb2', self)
+  end
+end
+# rubocop:enable Style/ClassAndModuleChildren

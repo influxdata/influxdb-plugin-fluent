@@ -1,11 +1,11 @@
-# influxdb-plugin-fluentd
+# influxdb-plugin-fluent
 
-[![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluentd.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluentd)
-[![codecov](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluentd/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluentd)
-[![Gem Version](https://badge.fury.io/rb/influxdb-plugin-fluentd.svg)](https://badge.fury.io/rb/influxdb-plugin-fluentd)
-[![License](https://img.shields.io/github/license/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/pulls)
+[![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluent.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluent)
+[![codecov](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluent)
+[![Gem Version](https://badge.fury.io/rb/influxdb-plugin-fluent.svg)](https://badge.fury.io/rb/influxdb-plugin-fluent)
+[![License](https://img.shields.io/github/license/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/pulls)
 
 This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
@@ -22,7 +22,7 @@ The plugin can be installed manually or with bundler.
 To install the plugin gem manually:
 
 ```
-gem install influxdb-plugin-fluentd --pre
+gem install influxdb-plugin-fluent --pre
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ TODO: Write usage instructions here
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bonitoo-io/influxdb-plugin-fluentd.
+Bug reports and pull requests are welcome on GitHub at https://github.com/bonitoo-io/influxdb-plugin-fluent.
 
 ## License
 
