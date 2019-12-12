@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluentd.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluentd)
 [![codecov](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluentd/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluentd)
-[![Gem Version](https://badge.fury.io/rb/influxdb-client.svg)](https://badge.fury.io/rb/influxdb-client)
+[![Gem Version](https://badge.fury.io/rb/influxdb-plugin-fluentd.svg)](https://badge.fury.io/rb/influxdb-plugin-fluentd)
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluentd.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluentd/pulls)
