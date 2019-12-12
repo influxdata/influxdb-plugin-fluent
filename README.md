@@ -9,7 +9,7 @@
 
 This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
-#### Note: This plugin is for use with InfluxDB 2.x. For InfluxDB 1.x instances, please use the [fluent-plugin-influxdb](https://github.com/fangli/fluent-plugin-influxdb) plufing.
+#### Note: This plugin is for use with InfluxDB 2.x. For InfluxDB 1.x instances, please use the [fluent-plugin-influxdb](https://github.com/fangli/fluent-plugin-influxdb) plugin.
 
 ## Installation
 
