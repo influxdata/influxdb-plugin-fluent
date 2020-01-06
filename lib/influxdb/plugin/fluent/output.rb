@@ -25,6 +25,45 @@ module InfluxDB::Plugin::Fluent
   # A buffered output plugin for Fluentd and InfluxDB 2
   class InfluxDBOutput < Fluent::Plugin::Output
     Fluent::Plugin.register_output('influxdb2', self)
+
+    helpers :inject, :compat_parameters
+
+    DEFAULT_BUFFER_TYPE = 'memory'.freeze
+
+    config_param :time_precision, :string, default: 'ns'
+    desc 'The time precision of timestamp. You should specify either second (s), ' \
+        'millisecond (ms), microsecond (us), or nanosecond (ns).'
+
+    config_section :buffer do
+      config_set_default :@type, DEFAULT_BUFFER_TYPE
+      config_set_default :chunk_keys, ['tag']
+    end
+
+    def configure(conf)
+      compat_parameters_convert(conf, :inject)
+      super
+      case @time_precision
+      when 'ns' then
+        @precision_formatter = ->(ns_time) { ns_time }
+      when 'us' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e3).round }
+      when 'ms' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e6).round }
+      when 's' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e9).round }
+      else
+        raise Fluent::ConfigError, "The time precision #{@time_precision} is not supported. You should use: " \
+                                   'second (s), millisecond (ms), microsecond (us), or nanosecond (ns).'
+      end
+    end
+
+    def multi_workers_ready?
+      true
+    end
+
+    def write(chunk)
+      # super
+    end
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

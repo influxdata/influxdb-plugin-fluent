@@ -13,21 +13,37 @@ This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
 ## Installation
 
-The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
+### Gems
 
-### Install the Gem
-
-The plugin can be installed manually or with bundler.
-
-To install the plugin gem manually:
+The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-plugin-fluent).  You can install the gem as follows:
 
 ```
-gem install influxdb-plugin-fluent --pre
+fluent-gem install influxdb-plugin-fluent
 ```
 
-## Usage
+## Plugins
 
-TODO: Write usage instructions here
+### influxdb2
+
+Store Fluentd event to InfluxDB 2 database.
+
+#### Configuration
+
+| Option | Description | Type | Default |
+|---|---|---|---|
+| time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
+
+##### Example
+
+```
+<match influxdb2.**>
+    @type influxdb2
+  
+    # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
+    # microsecond (us), or nanosecond (ns).
+    time_precision  s
+</match>
+```
 
 ## Contributing
 
