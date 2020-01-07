@@ -62,6 +62,8 @@ Store Fluentd event to InfluxDB 2 database.
     measurement     h2o
     # The list of record keys that are stored in InfluxDB as 'tag'.
     tag_keys        ["location", "type"]
+    # Specifies if the Fluentd's event tag is included into InfluxDB tags (ex. 'fluentd=system.logs).'
+    tag_fluentd     true
   
     # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
     # microsecond (us), or nanosecond (ns).

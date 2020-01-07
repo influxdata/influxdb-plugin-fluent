@@ -52,6 +52,9 @@ module InfluxDB::Plugin::Fluent
     config_param :tag_keys, :array, default: []
     desc 'The list of record keys that are stored in InfluxDB as \'tag\'.'
 
+    config_param :tag_fluentd, :bool, default: false
+    desc 'Specifies if the Fluentd\'s event tag is included into InfluxDB tags (ex. \'fluentd=system.logs\').'
+
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
@@ -98,7 +101,8 @@ module InfluxDB::Plugin::Fluent
 
     def write(chunk)
       points = []
-      measurement = @measurement || chunk.metadata.tag
+      tag = chunk.metadata.tag
+      measurement = @measurement || tag
       chunk.msgpack_each do |time, record|
         nano_seconds = time.sec * 1e9
         nano_seconds += time.nsec
@@ -111,6 +115,7 @@ module InfluxDB::Plugin::Fluent
           else
             point.add_field(k, v)
           end
+          point.add_tag('fluentd', tag) if @tag_fluentd
         end
         points << point
       end
