@@ -49,6 +49,9 @@ module InfluxDB::Plugin::Fluent
     config_param :measurement, :string, default: nil
     desc 'The name of the measurement. If not specified, Fluentd\'s tag is used.'
 
+    config_param :tag_keys, :array, default: []
+    desc 'The list of record keys that are stored in InfluxDB as \'tag\'.'
+
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
@@ -103,7 +106,11 @@ module InfluxDB::Plugin::Fluent
                 .new(name: measurement)
                 .time(nano_seconds, @precision)
         record.each_pair do |k, v|
-          point.add_field(k, v)
+          if @tag_keys.include?(k)
+            point.add_tag(k, v)
+          else
+            point.add_field(k, v)
+          end
         end
         points << point
       end

@@ -36,7 +36,8 @@ Store Fluentd event to InfluxDB 2 database.
 | use_ssl | Turn on/off SSL for HTTP communication. | bool | true |
 | bucket | Specifies the destination bucket for writes. | String | |
 | org | Specifies the destination organization for writes. | String | |
-| measurement | The name of the measurement. If not specified, Fluentd\'s tag is used. | String | nil |
+| measurement | The name of the measurement. If not specified, Fluentd's tag is used. | String | nil |
+| tag_keys | The list of record keys that are stored in InfluxDB as 'tag'. | Array | [] |
 | time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
 
 ##### Example
@@ -56,6 +57,11 @@ Store Fluentd event to InfluxDB 2 database.
     bucket          my-bucket
     # Specifies the destination organization for writes.
     org             my-org
+
+    # The name of the measurement. If not specified, Fluentd's tag is used. 
+    measurement     h2o
+    # The list of record keys that are stored in InfluxDB as 'tag'.
+    tag_keys        ["location", "type"]
   
     # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
     # microsecond (us), or nanosecond (ns).
