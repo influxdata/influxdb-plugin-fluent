@@ -30,6 +30,18 @@ module InfluxDB::Plugin::Fluent
 
     DEFAULT_BUFFER_TYPE = 'memory'.freeze
 
+    config_param :url, :string, default: 'http://localhost:9999'
+    desc 'InfluxDB URL to connect to (ex. http://localhost:9999).'
+
+    config_param :token, :string
+    desc 'Access Token used for authenticating/authorizing the InfluxDB request sent by client.'
+
+    config_param :bucket, :string
+    desc 'Specifies the destination bucket for writes.'
+
+    config_param :org, :string
+    desc 'Specifies the destination organization for writes.'
+
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
@@ -55,6 +67,7 @@ module InfluxDB::Plugin::Fluent
         raise Fluent::ConfigError, "The time precision #{@time_precision} is not supported. You should use: " \
                                    'second (s), millisecond (ms), microsecond (us), or nanosecond (ns).'
       end
+      raise Fluent::ConfigError, 'The InfluxDB URL should be defined.' if @url.empty?
     end
 
     def multi_workers_ready?

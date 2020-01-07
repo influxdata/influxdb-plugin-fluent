@@ -31,6 +31,10 @@ Store Fluentd event to InfluxDB 2 database.
 
 | Option | Description | Type | Default |
 |---|---|---|---|
+| url | InfluxDB URL to connect to (ex. http://localhost:9999). | String | http://localhost:9999 |
+| token | Access Token used for authenticating/authorizing the InfluxDB request sent by client. | String | |
+| bucket | Specifies the destination bucket for writes. | String | |
+| org | Specifies the destination organization for writes. | String | |
 | time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
 
 ##### Example
@@ -38,6 +42,16 @@ Store Fluentd event to InfluxDB 2 database.
 ```
 <match influxdb2.**>
     @type influxdb2
+
+    # InfluxDB URL to connect to (ex. http://localhost:9999).
+    url             http://localhost:9999
+    # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
+    token           my-token
+
+    # Specifies the destination bucket for writes.
+    bucket          my-bucket
+    # Specifies the destination organization for writes.
+    org             my-org
   
     # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
     # microsecond (us), or nanosecond (ns).

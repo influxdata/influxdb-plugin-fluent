@@ -24,6 +24,9 @@ class InfluxDBOutputTest < Minitest::Test
   def default_config
     %(
       @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
       time_precision ns
     )
   end
@@ -34,30 +37,74 @@ class InfluxDBOutputTest < Minitest::Test
 
   def test_time_precision_parameter
     refute_nil create_driver
-    refute_nil create_driver(%(
+    conf = %(
       @type influxdb2
-      time_precision ns
-    ))
-    refute_nil create_driver(%(
-      @type influxdb2
-      time_precision us
-    ))
-    refute_nil create_driver(%(
-      @type influxdb2
-      time_precision ms
-    ))
-    refute_nil create_driver(%(
-      @type influxdb2
-      time_precision s
-    ))
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision %s
+    )
+    refute_nil create_driver(format(conf, 'ns'))
+    refute_nil create_driver(format(conf, 'us'))
+    refute_nil create_driver(format(conf, 'ms'))
+    refute_nil create_driver(format(conf, 's'))
     error = assert_raises Fluent::ConfigError do
-      create_driver(%(
-        @type influxdb2
-        time_precision h
-    ))
+      create_driver(format(conf, 'h'))
     end
 
     assert_equal 'The time precision h is not supported. You should use: second (s), millisecond (ms), ' \
                  'microsecond (us), or nanosecond (ns).', error.message
+  end
+
+  def test_url_parameter
+    error = assert_raises Fluent::ConfigError do
+      create_driver(%(
+        @type influxdb2
+        url
+        token my-token
+        bucket my-bucket
+        org my-org
+    ))
+    end
+
+    assert_equal 'The InfluxDB URL should be defined.', error.message
+  end
+
+  def test_token_parameter
+    error = assert_raises Fluent::ConfigError do
+      create_driver(%(
+        @type influxdb2
+        bucket my-bucket
+        org my-org
+    ))
+    end
+
+    assert_equal '\'token\' parameter is required', error.message
+  end
+
+  def test_bucket_parameter
+    error = assert_raises Fluent::ConfigError do
+      create_driver(%(
+      @type influxdb2
+      token my-token
+      org my-org
+      time_precision ns
+    ))
+    end
+
+    assert_equal '\'bucket\' parameter is required', error.message
+  end
+
+  def test_otg_parameter
+    error = assert_raises Fluent::ConfigError do
+      create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      time_precision ns
+    ))
+    end
+
+    assert_equal '\'org\' parameter is required', error.message
   end
 end
