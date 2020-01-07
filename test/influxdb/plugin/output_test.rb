@@ -21,6 +21,14 @@
 require 'test_helper'
 
 class InfluxDBOutputTest < Minitest::Test
+  class MockInfluxDBOutput < InfluxDB::Plugin::Fluent::InfluxDBOutput
+    attr_reader :client
+
+    def write(chunk)
+      super
+    end
+  end
+
   def default_config
     %(
       @type influxdb2
@@ -32,7 +40,7 @@ class InfluxDBOutputTest < Minitest::Test
   end
 
   def create_driver(conf = default_config)
-    Fluent::Test::Driver::Output.new(InfluxDB::Plugin::Fluent::InfluxDBOutput).configure(conf)
+    Fluent::Test::Driver::Output.new(MockInfluxDBOutput).configure(conf)
   end
 
   def test_time_precision_parameter
@@ -106,5 +114,13 @@ class InfluxDBOutputTest < Minitest::Test
     end
 
     assert_equal '\'org\' parameter is required', error.message
+  end
+
+  def test_has_client
+    driver = create_driver
+    # start driver
+    driver.run(default_tag: 'input.influxdb2') do
+    end
+    refute_nil driver.instance.client
   end
 end

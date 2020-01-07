@@ -19,6 +19,7 @@
 # THE SOFTWARE.
 
 require 'fluent/plugin/output'
+require 'influxdb/client'
 
 # rubocop:disable Style/ClassAndModuleChildren
 module InfluxDB::Plugin::Fluent
@@ -68,6 +69,16 @@ module InfluxDB::Plugin::Fluent
                                    'second (s), millisecond (ms), microsecond (us), or nanosecond (ns).'
       end
       raise Fluent::ConfigError, 'The InfluxDB URL should be defined.' if @url.empty?
+    end
+
+    def start
+      super
+      @client = InfluxDB::Client.new(@url, @token)
+    end
+
+    def shutdown
+      super
+      @client.close!
     end
 
     def multi_workers_ready?
