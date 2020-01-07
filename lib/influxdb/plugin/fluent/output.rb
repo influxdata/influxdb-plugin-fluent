@@ -55,6 +55,10 @@ module InfluxDB::Plugin::Fluent
     config_param :tag_fluentd, :bool, default: false
     desc 'Specifies if the Fluentd\'s event tag is included into InfluxDB tags (ex. \'fluentd=system.logs\').'
 
+    config_param :field_keys, :array, default: []
+    desc 'The list of record keys that are stored in InfluxDB as \'field\'. ' \
+        'If it\'s not specified than as fields are used all record keys.'
+
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
@@ -112,7 +116,7 @@ module InfluxDB::Plugin::Fluent
         record.each_pair do |k, v|
           if @tag_keys.include?(k)
             point.add_tag(k, v)
-          else
+          elsif @field_keys.empty? || @field_keys.include?(k)
             point.add_field(k, v)
           end
           point.add_tag('fluentd', tag) if @tag_fluentd

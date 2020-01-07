@@ -38,9 +38,29 @@ Store Fluentd event to InfluxDB 2 database.
 | org | Specifies the destination organization for writes. | String | |
 | measurement | The name of the measurement. If not specified, Fluentd's tag is used. | String | nil |
 | tag_keys | The list of record keys that are stored in InfluxDB as 'tag'. | Array | [] |
+| tag_fluentd | Specifies if the Fluentd's event tag is included into InfluxDB tags (ex. 'fluentd=system.logs'). | bool | false |
+| field_keys | The list of record keys that are stored in InfluxDB as 'field'. If it's not specified than as fields are used all record keys. | Array | [] |
 | time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
 
-##### Example
+##### Minimal configuration
+
+```
+<match influxdb2.**>
+    @type influxdb2
+
+    # InfluxDB URL to connect to (ex. https://localhost:9999).
+    url             https://localhost:9999
+    # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
+    token           my-token
+
+    # Specifies the destination bucket for writes.
+    bucket          my-bucket
+    # Specifies the destination organization for writes.
+    org             my-org
+</match>
+```
+
+##### Full configuration
 
 ```
 <match influxdb2.**>

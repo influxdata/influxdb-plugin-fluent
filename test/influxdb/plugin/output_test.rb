@@ -214,9 +214,27 @@ class InfluxDBOutputTest < Minitest::Test
                      times: 1, body: 'h2o,fluentd=system.logs,location=europe level=2i 1444897215000000000')
   end
 
-  def emit_documents(driver)
+  def test_field_keys
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["location"]
+      field_keys ["level"]
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,location=europe level=2i 1444897215000000000')
+  end
+
+  def emit_documents(driver, data = { 'location' => 'europe', 'level' => 2 })
     time = event_time('2015-10-15 8:20:15 UTC')
-    driver.feed(time, 'location' => 'europe', 'level' => 2)
+    driver.feed(time, data)
     time
   end
 end

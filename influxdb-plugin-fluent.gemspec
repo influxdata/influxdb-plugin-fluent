@@ -47,7 +47,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.2.0'
 
   spec.add_runtime_dependency 'fluentd', '~> 1.8'
-  spec.add_runtime_dependency 'influxdb-client', '~> 1.0.0.pre.112'
+  spec.add_runtime_dependency 'influxdb-client', '~> 1.0.0.pre.116'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1.16'
