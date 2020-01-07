@@ -31,8 +31,8 @@ module InfluxDB::Plugin::Fluent
 
     DEFAULT_BUFFER_TYPE = 'memory'.freeze
 
-    config_param :url, :string, default: 'http://localhost:9999'
-    desc 'InfluxDB URL to connect to (ex. http://localhost:9999).'
+    config_param :url, :string, default: 'https://localhost:9999'
+    desc 'InfluxDB URL to connect to (ex. https://localhost:9999).'
 
     config_param :token, :string
     desc 'Access Token used for authenticating/authorizing the InfluxDB request sent by client.'
@@ -42,6 +42,9 @@ module InfluxDB::Plugin::Fluent
 
     config_param :org, :string
     desc 'Specifies the destination organization for writes.'
+
+    config_param :measurement, :string, default: nil
+    desc 'The name of the measurement. If not specified, Fluentd\'s tag is used.'
 
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
@@ -68,12 +71,14 @@ module InfluxDB::Plugin::Fluent
         raise Fluent::ConfigError, "The time precision #{@time_precision} is not supported. You should use: " \
                                    'second (s), millisecond (ms), microsecond (us), or nanosecond (ns).'
       end
+      @precision = InfluxDB::WritePrecision.new.get_from_value(@time_precision)
       raise Fluent::ConfigError, 'The InfluxDB URL should be defined.' if @url.empty?
     end
 
     def start
       super
-      @client = InfluxDB::Client.new(@url, @token)
+      @client = InfluxDB::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision)
+      @write_api = @client.create_write_api
     end
 
     def shutdown
@@ -86,7 +91,20 @@ module InfluxDB::Plugin::Fluent
     end
 
     def write(chunk)
-      # super
+      points = []
+      measurement = @measurement || chunk.metadata.tag
+      chunk.msgpack_each do |time, record|
+        nano_seconds = time.sec * 1e9
+        nano_seconds += time.nsec
+        point = InfluxDB::Point
+                .new(name: measurement)
+                .time(nano_seconds, @precision)
+        record.each_pair do |k, v|
+          point.add_field(k, v)
+        end
+        points << point
+      end
+      @write_api.write(data: points)
     end
   end
 end

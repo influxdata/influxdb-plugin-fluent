@@ -21,12 +21,18 @@
 require 'test_helper'
 
 class InfluxDBOutputTest < Minitest::Test
+  include Fluent::Test::Helpers
   class MockInfluxDBOutput < InfluxDB::Plugin::Fluent::InfluxDBOutput
     attr_reader :client
 
     def write(chunk)
       super
     end
+  end
+
+  def setup
+    Fluent::Test.setup
+    WebMock.disable_net_connect!
   end
 
   def default_config
@@ -118,9 +124,49 @@ class InfluxDBOutputTest < Minitest::Test
 
   def test_has_client
     driver = create_driver
-    # start driver
     driver.run(default_tag: 'input.influxdb2') do
     end
     refute_nil driver.instance.client
+  end
+
+  def test_measurement_as_parameter
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      measurement h2o
+      time_precision ns
+    ))
+    driver.run(default_tag: 'test') do
+      emit_documents(driver)
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o level=2i,location="europe" 1444897215000000000')
+  end
+
+  def test_measurement_as_tag
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver)
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag level=2i,location="europe" 1444897215000000000')
+  end
+
+  def emit_documents(driver)
+    time = event_time('2015-10-15 8:20:15 UTC')
+    driver.feed(time, 'location' => 'europe', 'level' => 2)
+    time
   end
 end
