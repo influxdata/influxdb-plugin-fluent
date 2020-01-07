@@ -96,6 +96,20 @@ class InfluxDBOutputTest < Minitest::Test
     assert_equal '\'token\' parameter is required', error.message
   end
 
+  def test_use_ssl_parameter
+    error = assert_raises Fluent::ConfigError do
+      create_driver(%(
+        @type influxdb2
+        bucket my-bucket
+        org my-org
+        token my-token
+        use_ssl not_bool
+    ))
+    end
+
+    assert_equal '\'use_ssl\' parameter is required but nil is specified', error.message
+  end
+
   def test_bucket_parameter
     error = assert_raises Fluent::ConfigError do
       create_driver(%(
@@ -109,7 +123,7 @@ class InfluxDBOutputTest < Minitest::Test
     assert_equal '\'bucket\' parameter is required', error.message
   end
 
-  def test_otg_parameter
+  def test_org_parameter
     error = assert_raises Fluent::ConfigError do
       create_driver(%(
       @type influxdb2

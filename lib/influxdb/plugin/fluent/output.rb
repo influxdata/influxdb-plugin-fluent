@@ -37,6 +37,9 @@ module InfluxDB::Plugin::Fluent
     config_param :token, :string
     desc 'Access Token used for authenticating/authorizing the InfluxDB request sent by client.'
 
+    config_param :use_ssl, :bool, default: true
+    desc 'Turn on/off SSL for HTTP communication.'
+
     config_param :bucket, :string
     desc 'Specifies the destination bucket for writes.'
 
@@ -77,7 +80,7 @@ module InfluxDB::Plugin::Fluent
 
     def start
       super
-      @client = InfluxDB::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision)
+      @client = InfluxDB::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision, use_ssl: @use_ssl)
       @write_api = @client.create_write_api
     end
 
