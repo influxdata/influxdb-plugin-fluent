@@ -19,12 +19,127 @@
 # THE SOFTWARE.
 
 require 'fluent/plugin/output'
+require 'influxdb/client'
 
 # rubocop:disable Style/ClassAndModuleChildren
 module InfluxDB::Plugin::Fluent
   # A buffered output plugin for Fluentd and InfluxDB 2
   class InfluxDBOutput < Fluent::Plugin::Output
     Fluent::Plugin.register_output('influxdb2', self)
+
+    helpers :inject, :compat_parameters
+
+    DEFAULT_BUFFER_TYPE = 'memory'.freeze
+
+    config_param :url, :string, default: 'https://localhost:9999'
+    desc 'InfluxDB URL to connect to (ex. https://localhost:9999).'
+
+    config_param :token, :string
+    desc 'Access Token used for authenticating/authorizing the InfluxDB request sent by client.'
+
+    config_param :use_ssl, :bool, default: true
+    desc 'Turn on/off SSL for HTTP communication.'
+
+    config_param :bucket, :string
+    desc 'Specifies the destination bucket for writes.'
+
+    config_param :org, :string
+    desc 'Specifies the destination organization for writes.'
+
+    config_param :measurement, :string, default: nil
+    desc 'The name of the measurement. If not specified, Fluentd\'s tag is used.'
+
+    config_param :tag_keys, :array, default: []
+    desc 'The list of record keys that are stored in InfluxDB as \'tag\'.'
+
+    config_param :tag_fluentd, :bool, default: false
+    desc 'Specifies if the Fluentd\'s event tag is included into InfluxDB tags (ex. \'fluentd=system.logs\').'
+
+    config_param :field_keys, :array, default: []
+    desc 'The list of record keys that are stored in InfluxDB as \'field\'. ' \
+        'If it\'s not specified than as fields are used all record keys.'
+
+    config_param :field_cast_to_float, :bool, default: false
+    desc 'Turn on/off auto casting Integer value to Float. ' \
+        'Helper to avoid mismatch error: \'series type mismatch: already Integer but got Float\'.'
+
+    config_param :time_precision, :string, default: 'ns'
+    desc 'The time precision of timestamp. You should specify either second (s), ' \
+        'millisecond (ms), microsecond (us), or nanosecond (ns).'
+
+    config_param :time_key, :string, default: nil
+    desc 'A name of the record key that used as a \'timestamp\' instead of event timestamp.' \
+        'If a record key doesn\'t exists or hasn\'t value then is used event timestamp.'
+
+    config_section :buffer do
+      config_set_default :@type, DEFAULT_BUFFER_TYPE
+      config_set_default :chunk_keys, ['tag']
+    end
+
+    def configure(conf)
+      compat_parameters_convert(conf, :inject)
+      super
+      case @time_precision
+      when 'ns' then
+        @precision_formatter = ->(ns_time) { ns_time }
+      when 'us' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e3).round }
+      when 'ms' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e6).round }
+      when 's' then
+        @precision_formatter = ->(ns_time) { (ns_time / 1e9).round }
+      else
+        raise Fluent::ConfigError, "The time precision #{@time_precision} is not supported. You should use: " \
+                                   'second (s), millisecond (ms), microsecond (us), or nanosecond (ns).'
+      end
+      @precision = InfluxDB::WritePrecision.new.get_from_value(@time_precision)
+      raise Fluent::ConfigError, 'The InfluxDB URL should be defined.' if @url.empty?
+    end
+
+    def start
+      super
+      @client = InfluxDB::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision, use_ssl: @use_ssl)
+      @write_api = @client.create_write_api
+    end
+
+    def shutdown
+      super
+      @client.close!
+    end
+
+    def multi_workers_ready?
+      true
+    end
+
+    def write(chunk)
+      points = []
+      tag = chunk.metadata.tag
+      measurement = @measurement || tag
+      chunk.msgpack_each do |time, record|
+        nano_seconds = time.sec * 1e9
+        nano_seconds += time.nsec
+        time_formatted = @precision_formatter.call(nano_seconds)
+        point = InfluxDB::Point
+                .new(name: measurement)
+        record.each_pair do |k, v|
+          if k.eql?(@time_key)
+            time_formatted = v
+          elsif @tag_keys.include?(k)
+            point.add_tag(k, v)
+          elsif @field_keys.empty? || @field_keys.include?(k)
+            if @field_cast_to_float & v.is_a?(Integer)
+              point.add_field(k, Float(v))
+            else
+              point.add_field(k, v)
+            end
+          end
+          point.add_tag('fluentd', tag) if @tag_fluentd
+        end
+        point.time(time_formatted, @precision)
+        points << point
+      end
+      @write_api.write(data: points)
+    end
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

@@ -13,21 +13,95 @@ This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
 ## Installation
 
-The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/mongo).
+### Gems
 
-### Install the Gem
-
-The plugin can be installed manually or with bundler.
-
-To install the plugin gem manually:
+The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-plugin-fluent).  You can install the gem as follows:
 
 ```
-gem install influxdb-plugin-fluent --pre
+fluent-gem install influxdb-plugin-fluent
 ```
 
-## Usage
+## Plugins
 
-TODO: Write usage instructions here
+### influxdb2
+
+Store Fluentd event to InfluxDB 2 database.
+
+#### Configuration
+
+| Option | Description | Type | Default |
+|---|---|---|---|
+| url | InfluxDB URL to connect to (ex. https://localhost:9999). | String | https://localhost:9999 |
+| token | Access Token used for authenticating/authorizing the InfluxDB request sent by client. | String | |
+| use_ssl | Turn on/off SSL for HTTP communication. | bool | true |
+| bucket | Specifies the destination bucket for writes. | String | |
+| org | Specifies the destination organization for writes. | String | |
+| measurement | The name of the measurement. If not specified, Fluentd's tag is used. | String | nil |
+| tag_keys | The list of record keys that are stored in InfluxDB as 'tag'. | Array | [] |
+| tag_fluentd | Specifies if the Fluentd's event tag is included into InfluxDB tags (ex. 'fluentd=system.logs'). | bool | false |
+| field_keys | The list of record keys that are stored in InfluxDB as 'field'. If it's not specified than as fields are used all record keys. | Array | [] |
+| field_cast_to_float | Turn on/off auto casting Integer value to Float. Helper to avoid mismatch error: 'series type mismatch: already Integer but got Float'. | bool | false |
+| time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
+| time_key | A name of the record key that used as a 'timestamp' instead of event timestamp. If a record key doesn't exists or hasn't value then is used event timestamp. | String | nil |
+
+##### Minimal configuration
+
+```
+<match influxdb2.**>
+    @type influxdb2
+
+    # InfluxDB URL to connect to (ex. https://localhost:9999).
+    url             https://localhost:9999
+    # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
+    token           my-token
+
+    # Specifies the destination bucket for writes.
+    bucket          my-bucket
+    # Specifies the destination organization for writes.
+    org             my-org
+</match>
+```
+
+##### Full configuration
+
+```
+<match influxdb2.**>
+    @type influxdb2
+
+    # InfluxDB URL to connect to (ex. https://localhost:9999).
+    url                     https://localhost:9999
+    # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
+    token                   my-token
+    # Turn on/off SSL for HTTP communication.
+    use_ssl                 true
+
+    # Specifies the destination bucket for writes.
+    bucket                  my-bucket
+    # Specifies the destination organization for writes.
+    org                     my-org
+
+    # The name of the measurement. If not specified, Fluentd's tag is used. 
+    measurement             h2o
+    # The list of record keys that are stored in InfluxDB as 'tag'.
+    tag_keys                ["location", "type"]
+    # Specifies if the Fluentd's event tag is included into InfluxDB tags (ex. 'fluentd=system.logs).'
+    tag_fluentd             true
+  
+    # The list of record keys that are stored in InfluxDB as 'field'. 
+    # If it's not specified than as fields are used all record keys.
+    field_keys              ["value"]
+    # Turn on/off auto casting Integer value to Float. 
+    # Helper to avoid mismatch error: 'series type mismatch: already Integer but got Float'.
+    field_cast_to_float     true
+
+    # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
+    # microsecond (us), or nanosecond (ns).
+    time_precision          s
+    # A name of the record key that used as a 'timestamp' instead of event timestamp.
+    # If a record key doesn't exists or hasn't value then is used event timestamp.	
+    time_key                time
+</match>
+```
 
 ## Contributing
 
