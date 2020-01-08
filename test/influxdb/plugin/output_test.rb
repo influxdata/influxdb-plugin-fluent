@@ -232,6 +232,78 @@ class InfluxDBOutputTest < Minitest::Test
                      times: 1, body: 'h2o_tag,location=europe level=2i 1444897215000000000')
   end
 
+  def test_time_precision_ns
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_precision ns
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000000000')
+  end
+
+  def test_time_precision_us
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=us')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_precision us
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=us',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000000')
+  end
+
+  def test_time_precision_ms
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ms')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_precision ms
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ms',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000')
+  end
+
+  def test_time_precision_s
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=s')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_precision s
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=s',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215')
+  end
+
   def emit_documents(driver, data = { 'location' => 'europe', 'level' => 2 })
     time = event_time('2015-10-15 8:20:15 UTC')
     driver.feed(time, data)

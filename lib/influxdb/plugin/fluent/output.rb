@@ -112,7 +112,7 @@ module InfluxDB::Plugin::Fluent
         nano_seconds += time.nsec
         point = InfluxDB::Point
                 .new(name: measurement)
-                .time(nano_seconds, @precision)
+                .time(@precision_formatter.call(nano_seconds), @precision)
         record.each_pair do |k, v|
           if @tag_keys.include?(k)
             point.add_tag(k, v)
