@@ -59,6 +59,10 @@ module InfluxDB::Plugin::Fluent
     desc 'The list of record keys that are stored in InfluxDB as \'field\'. ' \
         'If it\'s not specified than as fields are used all record keys.'
 
+    config_param :field_cast_to_float, :bool, default: false
+    desc 'Turn on/off auto casting Integer value to Float. ' \
+        'Helper to avoid mismatch error: \'series type mismatch: already Integer but got Float\'.'
+
     config_param :time_precision, :string, default: 'ns'
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
@@ -123,7 +127,11 @@ module InfluxDB::Plugin::Fluent
           elsif @tag_keys.include?(k)
             point.add_tag(k, v)
           elsif @field_keys.empty? || @field_keys.include?(k)
-            point.add_field(k, v)
+            if @field_cast_to_float & v.is_a?(Integer)
+              point.add_field(k, Float(v))
+            else
+              point.add_field(k, v)
+            end
           end
           point.add_tag('fluentd', tag) if @tag_fluentd
         end
