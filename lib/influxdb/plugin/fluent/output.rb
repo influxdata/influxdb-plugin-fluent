@@ -63,6 +63,10 @@ module InfluxDB::Plugin::Fluent
     desc 'The time precision of timestamp. You should specify either second (s), ' \
         'millisecond (ms), microsecond (us), or nanosecond (ns).'
 
+    config_param :time_key, :string, default: nil
+    desc 'A name of the record key that used as a \'timestamp\' instead of event timestamp.' \
+        'If a record key doesn\'t exists or hasn\'t value then is used event timestamp.'
+
     config_section :buffer do
       config_set_default :@type, DEFAULT_BUFFER_TYPE
       config_set_default :chunk_keys, ['tag']
@@ -110,17 +114,20 @@ module InfluxDB::Plugin::Fluent
       chunk.msgpack_each do |time, record|
         nano_seconds = time.sec * 1e9
         nano_seconds += time.nsec
+        time_formatted = @precision_formatter.call(nano_seconds)
         point = InfluxDB::Point
                 .new(name: measurement)
-                .time(@precision_formatter.call(nano_seconds), @precision)
         record.each_pair do |k, v|
-          if @tag_keys.include?(k)
+          if k.eql?(@time_key)
+            time_formatted = v
+          elsif @tag_keys.include?(k)
             point.add_tag(k, v)
           elsif @field_keys.empty? || @field_keys.include?(k)
             point.add_field(k, v)
           end
           point.add_tag('fluentd', tag) if @tag_fluentd
         end
+        point.time(time_formatted, @precision)
         points << point
       end
       @write_api.write(data: points)

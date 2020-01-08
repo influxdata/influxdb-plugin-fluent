@@ -41,6 +41,7 @@ Store Fluentd event to InfluxDB 2 database.
 | tag_fluentd | Specifies if the Fluentd's event tag is included into InfluxDB tags (ex. 'fluentd=system.logs'). | bool | false |
 | field_keys | The list of record keys that are stored in InfluxDB as 'field'. If it's not specified than as fields are used all record keys. | Array | [] |
 | time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
+| time_key | A name of the record key that used as a 'timestamp' instead of event timestamp. If a record key doesn't exists or hasn't value then is used event timestamp. | String | nil |
 
 ##### Minimal configuration
 
@@ -88,6 +89,9 @@ Store Fluentd event to InfluxDB 2 database.
     # The time precision of timestamp. You should specify either second (s), millisecond (ms), 
     # microsecond (us), or nanosecond (ns).
     time_precision  s
+    # A name of the record key that used as a 'timestamp' instead of event timestamp.
+    # If a record key doesn't exists or hasn't value then is used event timestamp.	
+    time_key        time
 </match>
 ```
 
