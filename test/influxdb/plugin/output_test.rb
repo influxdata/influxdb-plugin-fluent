@@ -22,7 +22,7 @@ require 'test_helper'
 
 class InfluxDBOutputTest < Minitest::Test
   include Fluent::Test::Helpers
-  class MockInfluxDBOutput < InfluxDB::Plugin::Fluent::InfluxDBOutput
+  class MockInfluxDBOutput < InfluxDBOutput
     attr_reader :client
 
     def write(chunk)
@@ -248,6 +248,22 @@ class InfluxDBOutputTest < Minitest::Test
     end
     assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000000000')
+  end
+
+  def test_time_integer
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      driver.feed(123_465_789, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
+    end
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag level=2i,location="europe",version="v.10" 123465789')
   end
 
   def test_time_precision_us

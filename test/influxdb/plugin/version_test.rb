@@ -22,6 +22,6 @@ require 'test_helper'
 
 class VersionTest < Minitest::Test
   def test_defined_version_number
-    refute_nil ::InfluxDB::Plugin::Fluent::VERSION
+    refute_nil ::InfluxDB2::Plugin::Fluent::VERSION
   end
 end

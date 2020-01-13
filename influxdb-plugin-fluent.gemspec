@@ -20,14 +20,14 @@
 #
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'influxdb/plugin/fluent/version'
+require 'fluent/plugin/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'influxdb-plugin-fluent'
   spec.version       = if ENV['CIRCLE_BUILD_NUM']
-                         "#{InfluxDB::Plugin::Fluent::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}"
+                         "#{InfluxDB2::Plugin::Fluent::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}"
                        else
-                         InfluxDB::Plugin::Fluent::VERSION
+                         InfluxDB2::Plugin::Fluent::VERSION
                        end
   spec.authors       = ['Jakub Bednar']
   spec.email         = ['jakub.bednar@gmail.com']
@@ -47,7 +47,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.2.0'
 
   spec.add_runtime_dependency 'fluentd', '~> 1.8'
-  spec.add_runtime_dependency 'influxdb-client', '~> 1.0.0.pre.116'
+  spec.add_runtime_dependency 'influxdb-client', '~> 1.0.0.pre.159'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1.16'
