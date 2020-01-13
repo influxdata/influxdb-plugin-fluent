@@ -25,21 +25,54 @@ set -e
 
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+docker kill influxdb_v2 || true
+docker rm influxdb_v2 || true
+
+docker kill fluentd_influx || true
+docker rm fluentd_influx || true
+
+docker network rm influx_network || true
+docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
+
+#
+# Start InfluxDB 2
+#
+docker run \
+       --detach \
+       --name influxdb_v2 \
+       --network influx_network \
+       --publish 9999:9999 \
+       quay.io/influxdb/influxdb:2.0.0-beta
+
+#
+# Post onBoarding request to InfluxDB 2
+#
+"${SCRIPT_PATH}"/../bin/influxdb-onboarding.sh
+
+#
 # Build actual version of output plugin
-# gem build influxdb-plugin-fluent.gemspec -o examples/fluentd/influxdb-plugin-fluent.gem
+#
+cd "${SCRIPT_PATH}"/../
+docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app ruby:2.6 gem build influxdb-plugin-fluent.gemspec \
+  -o ./examples/fluentd/influxdb-plugin-fluent.gem
 
-# Start docker compose
-cd "${SCRIPT_PATH}"
-docker-compose up -d --build
+#
+# Build fluentd Docker image with output plugin
+#
+docker build -t fluentd_influx examples/fluentd
 
-#curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json' \
-#    -d '{
-#            "username": "my-user",
-#            "password": "my-password",
-#            "org": "my-org",
-#            "bucket": "my-bucket",
-#            "token": "my-token"
-#        }'
+#
+# Start fluentd with docker image
+#
+docker run \
+       --detach \
+       --name fluentd_influx \
+       --network influx_network \
+       --publish 24224:24224 \
+       --publish 24220:24220 \
+       fluentd_influx
 
+echo "Wait to start fluentd"
+wget -S --tries=20 --retry-connrefused --waitretry=5 --output-document=/dev/null http://localhost:24220/api/plugins.json
 
-docker logs -f fluentd
+docker logs -f fluentd_influx
