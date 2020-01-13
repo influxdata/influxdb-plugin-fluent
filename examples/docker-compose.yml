@@ -1,0 +1,42 @@
+version: '3'
+services:
+  fluentd:
+#    image: fluent/fluentd:edge-debian
+    build: ./fluentd
+    container_name: fluentd
+    links:
+      - influxdb
+#    volumes:
+      #- ./fluent.conf:/fluentd/etc/fluent.conf
+#      - ./plugins/:/fluentd/plugins
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:24220/api/plugins.json"]
+#      interval: 1s
+#      timeout: 10s
+#      retries: 10
+    ports:
+      - 24224:24224
+      - 24220:24220
+  influxdb:
+    image: quay.io/influxdb/influxdb:2.0.0-beta
+    container_name: influxdb_v2
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:9999/metrics"]
+#      interval: 1s
+#      timeout: 10s
+#      retries: 10
+    ports:
+      - 9999:9999
+  web:
+    image: httpd
+    container_name: web
+    depends_on:
+      - fluentd
+    ports:
+      - 8080:80
+    links:
+      - fluentd
+    logging:
+      driver: fluentd
+      options:
+         tag: "httpd.access"
