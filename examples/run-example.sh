@@ -31,6 +31,9 @@ docker rm influxdb_v2 || true
 docker kill fluentd_influx || true
 docker rm fluentd_influx || true
 
+docker kill web || true
+docker rm web || true
+
 docker network rm influx_network || true
 docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
 
@@ -74,5 +77,20 @@ docker run \
 
 echo "Wait to start fluentd"
 wget -S --tries=20 --retry-connrefused --waitretry=5 --output-document=/dev/null http://localhost:24220/api/plugins.json
+
+#
+# Start WebApp
+#
+docker run \
+       --detach \
+       --name web \
+       --network influx_network \
+       --publish 8080:80 \
+       --log-driver fluentd \
+       --log-driver fluentd \
+       --log-opt tag=httpd.access \
+       httpd
+
+wget -S --spider --tries=20 --retry-connrefused --waitretry=5 http://localhost:8080
 
 docker logs -f fluentd_influx
