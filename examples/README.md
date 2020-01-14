@@ -9,19 +9,59 @@ InfluxDB 2 provide a solution for realtime analysis and alerting over collected 
 
 [InfluxDB](https://www.influxdata.com) open source time series database, purpose-built by InfluxData for monitoring metrics and events, provides real-time visibility into stacks, sensors, and systems. 
 
-## Architecture
+## Demo
+
+### Architecture
 
 The following demo show how to analyze logs from dockerized environment.
 
-### Step 1: 
-### Step 2: 
-### Step 3:
+### Prerequisites
+
+- Docker installed on your computer
+
+### Step 1 - Create Docker Network
+
+Create bridge network that allows smoothly communication between containers:
+
+```bash
+docker network rm influx_network || true
+docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
+```
+
+### Step 2 - Start InfluxDB
+
+Start latest `InfluxDB 2`:
+
+```bash
+docker run \
+       --detach \
+       --name influxdb_v2 \
+       --network influx_network \
+       --publish 9999:9999 \
+       quay.io/influxdb/influxdb:2.0.0-beta
+```
+
+Create default organization, user and bucket:
+```bash
+curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json' \
+    -d '{
+            "username": "my-user",
+            "password": "my-password",
+            "org": "my-org",
+            "bucket": "my-bucket",
+            "token": "my-token"
+        }'
+```
+
+### Step 3: 
+### Step 4 — Import Dashboard
 
 Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](examples/influxdb/web_app_access.json) by following steps:
 
-> username: my-user
->
-> password: my-password
+```
+username: my-user
+password: my-password
+```
 
 1. Click the **Dashboards** icon in the navigation bar.
 1. Click the **Create Dashboard** menu in the upper right and select **Import Dashboard**.
