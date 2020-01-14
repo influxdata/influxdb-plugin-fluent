@@ -15,6 +15,9 @@ InfluxDB 2 provide a solution for realtime analysis and alerting over collected 
 
 The following demo show how to analyze logs from dockerized environment.
 
+> The steps from 1 to 3 could be skipped if you use a script:
+>
+> [`run-example.sh`](run-example.sh)
 ### Prerequisites
 
 - Docker installed on your computer
@@ -56,7 +59,7 @@ curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json'
 ### Step 3: 
 ### Step 4 — Import Dashboard
 
-Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](examples/influxdb/web_app_access.json) by following steps:
+Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
 
 ```
 username: my-user
