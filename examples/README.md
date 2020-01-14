@@ -178,12 +178,11 @@ The imported dashboard should look like this:
  
 ## Conclusion
 
-Analyze Apache access log is just one way how to use power of InfluxDB and Fluentd. 
-There are other things you could do with InfluxDB and Fluentd and next step could be a [Monitoring and alerting](https://v2.docs.influxdata.com/v2.0/monitor-alert/#manage-your-monitoring-and-alerting-pipeline). 
+Analyze Apache Access Log is just one way how to use a power of InfluxDB and Fluentd. 
+There are other things you could do with InfluxDB and Fluentd such as: [Monitoring and alerting](https://v2.docs.influxdata.com/v2.0/monitor-alert/#manage-your-monitoring-and-alerting-pipeline). 
 
-### Links
+## Links
 
-- https://docs.fluentd.org/installation/install-by-dmg
 - https://www.digitalocean.com/community/tutorials/how-to-centralize-your-docker-logs-with-fluentd-and-elasticsearch-on-ubuntu-16-04
 - https://stackoverflow.com/questions/58563760/docker-compose-pulls-an-two-images-an-app-and-fluentd-but-no-logs-are-sent-to-s
 - https://docs.fluentd.org/v/0.12/container-deployment/docker-compose
