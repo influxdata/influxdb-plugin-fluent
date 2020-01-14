@@ -11,11 +11,9 @@ InfluxDB 2 provide a solution for realtime analysis and alerting over collected 
 
 ## Demo
 
-### Architecture
+The following demo show how to analyze logs (Apache Access Log) from dockerized environment.
 
-The following demo show how to analyze logs from dockerized environment.
-
-> The steps from 1 to 4 could be skipped if you use a script:
+> The steps from 1 to 6 could be skipped if you use a script:
 >
 > [`run-example.sh`](run-example.sh)
 ### Prerequisites
@@ -134,7 +132,32 @@ docker run \
        fluentd_influx
 ```
 
-### Step 5 — Import Dashboard
+### Step 5 — Start Apache HTTP Server
+
+Docker includes multiple logging mechanisms to help you get information from running containers and services.
+
+We will use [Fluentd](https://docs.docker.com/config/containers/logging/fluentd/) logging driver with configured tag to `httpd.access`:
+ 
+```bash
+docker run \
+       --detach \
+       --name web \
+       --network influx_network \
+       --publish 8080:80 \
+       --log-driver fluentd \
+       --log-opt tag=httpd.access \
+       httpd
+```
+
+### Step 6 — Generate httpd Access Logs
+
+Generate some access logs by curl:
+```bash
+curl http://localhost:8080/
+curl http://localhost:8080/not_exists
+```
+
+### Step 7 — Import Dashboard
 
 Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
 
