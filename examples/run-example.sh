@@ -91,7 +91,6 @@ docker run \
        --volume "${SCRIPT_PATH}"/web/httpd.conf:/usr/local/apache2/conf/httpd.conf \
        --publish 8080:80 \
        --log-driver fluentd \
-       --log-driver fluentd \
        --log-opt tag=httpd.access \
        httpd
 
