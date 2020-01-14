@@ -96,6 +96,8 @@ class InfluxDBOutput < Fluent::Plugin::Output
 
   def start
     super
+    log.info  "Connecting to InfluxDB: url: #{@url}, bucket: #{@bucket}, org: #{@org}, precision = #{@precision}, " \
+              "use_ssl = #{@use_ssl}"
     @client = InfluxDB2::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision, use_ssl: @use_ssl)
     @write_api = @client.create_write_api
   end
@@ -115,12 +117,12 @@ class InfluxDBOutput < Fluent::Plugin::Output
     measurement = @measurement || tag
     chunk.msgpack_each do |time, record|
       if time.is_a?(Integer)
-        nano_seconds = time
+        time_formatted = time
       else
         nano_seconds = time.sec * 1e9
         nano_seconds += time.nsec
+        time_formatted = @precision_formatter.call(nano_seconds)
       end
-      time_formatted = @precision_formatter.call(nano_seconds)
       point = InfluxDB2::Point
               .new(name: measurement)
       record.each_pair do |k, v|
@@ -141,5 +143,6 @@ class InfluxDBOutput < Fluent::Plugin::Output
       points << point
     end
     @write_api.write(data: points)
+    log.trace "Written points: #{points}"
   end
 end
