@@ -1,0 +1,4 @@
+http://web:80/foo/bar/
+http://web:80/
+http://web:80/foo.html
+http://web:80/parallelfoo/bar/?v=1

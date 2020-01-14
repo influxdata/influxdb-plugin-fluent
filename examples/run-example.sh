@@ -34,6 +34,9 @@ docker rm fluentd_influx || true
 docker kill web || true
 docker rm web || true
 
+docker kill ab || true
+docker rm ab || true
+
 docker network rm influx_network || true
 docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
 
@@ -85,12 +88,25 @@ docker run \
        --detach \
        --name web \
        --network influx_network \
+       --volume "${SCRIPT_PATH}"/web/httpd.conf:/usr/local/apache2/conf/httpd.conf \
        --publish 8080:80 \
        --log-driver fluentd \
        --log-driver fluentd \
        --log-opt tag=httpd.access \
        httpd
 
+echo "Wait to start WebApp"
 wget -S --spider --tries=20 --retry-connrefused --waitretry=5 http://localhost:8080
+
+#
+# Run Apache Benchmark to simulate load
+#
+docker run \
+        --detach \
+        --name ab \
+        --network influx_network \
+        --volume "${SCRIPT_PATH}"/ab/urls.txt:/tmp/urls.txt \
+        --volume "${SCRIPT_PATH}"/ab/load.sh:/tmp/load.sh \
+        russmckendrick/ab bash /tmp/load.sh
 
 docker logs -f fluentd_influx
