@@ -136,7 +136,7 @@ docker run \
 
 Docker includes multiple logging mechanisms to help you get information from running containers and services.
 
-We will use [Fluentd](https://docs.docker.com/config/containers/logging/fluentd/) logging driver with configured tag to `httpd.access`:
+We will use [Fluentd](https://docs.docker.com/config/containers/logging/fluentd/) logging driver with configured tag as `httpd.access`:
  
 ```bash
 docker run \
