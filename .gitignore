@@ -10,4 +10,4 @@
 /Gemfile.lock
 /test/reports/
 .rakeTasks
-/influxdb-plugin-fluent-*.gem
+**/influxdb-plugin-fluent*.gem

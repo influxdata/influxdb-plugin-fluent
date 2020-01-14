@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+#
 # The MIT License
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -17,11 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+#
 
-module InfluxDB
-  module Plugin
-    module Fluent
-      VERSION = '1.0.0'.freeze
-    end
-  end
-end
+apk add parallel
+cat /tmp/urls.txt | parallel "watch -n 5 ab -n 1000 -c 10 {}"

@@ -18,10 +18,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'test_helper'
-
-class VersionTest < Minitest::Test
-  def test_defined_version_number
-    refute_nil ::InfluxDB2::Plugin::Fluent::VERSION
-  end
-end
+require 'fluent/plugin/version'
+require 'fluent/plugin/out_influxdb2'

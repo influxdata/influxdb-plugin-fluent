@@ -18,5 +18,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'influxdb/plugin/fluent/version'
-require 'influxdb/plugin/fluent/output'
+module InfluxDB2
+  module Plugin
+    module Fluent
+      VERSION = '1.0.0'.freeze
+    end
+  end
+end
