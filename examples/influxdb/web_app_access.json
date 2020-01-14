@@ -20,15 +20,19 @@
      "data": [
       {
        "type": "cell",
-       "id": "0515061de7f1b000"
+       "id": "051559b2aa2a2000"
       },
       {
        "type": "cell",
-       "id": "0515061de8f1b000"
+       "id": "051559b2ae2a2000"
       },
       {
        "type": "cell",
-       "id": "0515064fae31b000"
+       "id": "051559b2af6a2000"
+      },
+      {
+       "type": "cell",
+       "id": "05155aef3daa2000"
       }
      ]
     },
@@ -39,25 +43,7 @@
   },
   "included": [
    {
-    "id": "0515061de7f1b000",
-    "type": "cell",
-    "attributes": {
-     "x": 4,
-     "y": 0,
-     "w": 4,
-     "h": 4
-    },
-    "relationships": {
-     "view": {
-      "data": {
-       "type": "view",
-       "id": "0515061de7f1b000"
-      }
-     }
-    }
-   },
-   {
-    "id": "0515061de8f1b000",
+    "id": "051559b2aa2a2000",
     "type": "cell",
     "attributes": {
      "x": 0,
@@ -69,13 +55,13 @@
      "view": {
       "data": {
        "type": "view",
-       "id": "0515061de8f1b000"
+       "id": "051559b2aa2a2000"
       }
      }
     }
    },
    {
-    "id": "0515064fae31b000",
+    "id": "051559b2ae2a2000",
     "type": "cell",
     "attributes": {
      "x": 0,
@@ -87,62 +73,50 @@
      "view": {
       "data": {
        "type": "view",
-       "id": "0515064fae31b000"
+       "id": "051559b2ae2a2000"
+      }
+     }
+    }
+   },
+   {
+    "id": "051559b2af6a2000",
+    "type": "cell",
+    "attributes": {
+     "x": 4,
+     "y": 0,
+     "w": 4,
+     "h": 4
+    },
+    "relationships": {
+     "view": {
+      "data": {
+       "type": "view",
+       "id": "051559b2af6a2000"
+      }
+     }
+    }
+   },
+   {
+    "id": "05155aef3daa2000",
+    "type": "cell",
+    "attributes": {
+     "x": 8,
+     "y": 0,
+     "w": 4,
+     "h": 4
+    },
+    "relationships": {
+     "view": {
+      "data": {
+       "type": "view",
+       "id": "05155aef3daa2000"
       }
      }
     }
    },
    {
     "type": "view",
-    "id": "0515061de7f1b000",
-    "attributes": {
-     "name": "Request Size",
-     "properties": {
-      "shape": "chronograf-v2",
-      "type": "single-stat",
-      "queries": [
-       {
-        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")\n  |> filter(fn: (r) => r.method == \"GET\")\n  |> filter(fn: (r) => r._field == \"size\")\n  |> drop(columns: [\"path\"])\n  |> toInt()\n  |> sum(column: \"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: r._value / 1024\n    })\n  )",
-        "editMode": "advanced",
-        "name": "",
-        "builderConfig": {
-         "buckets": [],
-         "tags": [
-          {
-           "key": "_measurement",
-           "values": []
-          }
-         ],
-         "functions": [],
-         "aggregateWindow": {
-          "period": "auto"
-         }
-        }
-       }
-      ],
-      "prefix": "",
-      "suffix": " KiB",
-      "colors": [
-       {
-        "id": "base",
-        "type": "text",
-        "hex": "#F48D38",
-        "name": "tiger",
-        "value": 0
-       }
-      ],
-      "decimalPlaces": {
-       "isEnforced": true,
-       "digits": 2
-      },
-      "note": "",
-      "showNoteWhenEmpty": false
-     }
-    }
-   },
-   {
-    "type": "view",
-    "id": "0515061de8f1b000",
+    "id": "051559b2aa2a2000",
     "attributes": {
      "name": "Requests Count",
      "properties": {
@@ -190,7 +164,7 @@
    },
    {
     "type": "view",
-    "id": "0515064fae31b000",
+    "id": "051559b2ae2a2000",
     "attributes": {
      "name": "Requests",
      "properties": {
@@ -269,9 +243,119 @@
       "showNoteWhenEmpty": false,
       "xColumn": "_time",
       "yColumn": "_value",
-      "shadeBelow": false,
+      "shadeBelow": true,
       "position": "overlaid",
       "timeFormat": ""
+     }
+    }
+   },
+   {
+    "type": "view",
+    "id": "051559b2af6a2000",
+    "attributes": {
+     "name": "Request Size",
+     "properties": {
+      "shape": "chronograf-v2",
+      "type": "single-stat",
+      "queries": [
+       {
+        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")\n  |> filter(fn: (r) => r.method == \"GET\")\n  |> filter(fn: (r) => r._field == \"size\")\n  |> drop(columns: [\"path\"])\n  |> toInt()\n  |> sum(column: \"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: r._value / 1024\n    })\n  )",
+        "editMode": "advanced",
+        "name": "",
+        "builderConfig": {
+         "buckets": [],
+         "tags": [
+          {
+           "key": "_measurement",
+           "values": []
+          }
+         ],
+         "functions": [],
+         "aggregateWindow": {
+          "period": "auto"
+         }
+        }
+       }
+      ],
+      "prefix": "",
+      "suffix": " KiB",
+      "colors": [
+       {
+        "id": "base",
+        "type": "text",
+        "hex": "#F48D38",
+        "name": "tiger",
+        "value": 0
+       }
+      ],
+      "decimalPlaces": {
+       "isEnforced": true,
+       "digits": 2
+      },
+      "note": "",
+      "showNoteWhenEmpty": false
+     }
+    }
+   },
+   {
+    "type": "view",
+    "id": "05155aef3daa2000",
+    "attributes": {
+     "name": "Success rate",
+     "properties": {
+      "shape": "chronograf-v2",
+      "type": "single-stat",
+      "queries": [
+       {
+        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")\n  |> filter(fn: (r) => r._field == \"code\")\n  |> drop(columns: [\"path\", \"method\", \"host\"])\n  |> toInt()\n  |> map(fn: (r) => ({   \n        _time: r._start,\n        _success:\n          if r._value < 300 then 1\n          else 0,\n        _failure:\n          if r._value >= 300 then 1\n          else 0\n       })\n    )\n  |> cumulativeSum(columns: [\"_failure\", \"_success\"])\n  |> drop(columns: [\"_time\"])\n  |> map(fn: (r) => ({\n    r with\n    _value: (float(v: r._success) / (float(v: r._success) + float(v: r._failure))) * 100.0\n  })\n)\n  |> last()",
+        "editMode": "advanced",
+        "name": "",
+        "builderConfig": {
+         "buckets": [],
+         "tags": [
+          {
+           "key": "_measurement",
+           "values": []
+          }
+         ],
+         "functions": [],
+         "aggregateWindow": {
+          "period": "auto"
+         }
+        }
+       }
+      ],
+      "prefix": "",
+      "suffix": "%",
+      "colors": [
+       {
+        "id": "base",
+        "type": "text",
+        "hex": "#00C9FF",
+        "name": "laser",
+        "value": 0
+       },
+       {
+        "id": "5e50c5ba-51cc-4139-870f-663050d6e79d",
+        "type": "text",
+        "hex": "#F48D38",
+        "name": "tiger",
+        "value": 80
+       },
+       {
+        "id": "305d340f-09e5-4137-b88b-0a6599209dc0",
+        "type": "text",
+        "hex": "#7CE490",
+        "name": "honeydew",
+        "value": 90
+       }
+      ],
+      "decimalPlaces": {
+       "isEnforced": true,
+       "digits": 2
+      },
+      "note": "",
+      "showNoteWhenEmpty": false
      }
     }
    }
