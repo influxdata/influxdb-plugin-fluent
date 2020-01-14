@@ -13,7 +13,30 @@ InfluxDB 2 provide a solution for realtime analysis and alerting over collected 
 
 The following demo show how to analyze logs from dockerized environment.
 
-<img src="dashboard.png" height="250px">
+### Step 1: 
+### Step 2: 
+### Step 3:
+
+Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](examples/influxdb/web_app_access.json) by following steps:
+
+> username: my-user
+>
+> password: my-password
+
+1. Click the **Dashboards** icon in the navigation bar.
+1. Click the **Create Dashboard** menu in the upper right and select **Import Dashboard**.
+1. Select **Upload File** to drag-and-drop or select a **web_app_access.json**.
+1. Click **Import JSON** as Dashboard.
+
+The imported dashboard should look like this:
+
+<img src="dashboard.png" height="400px">
+
+ 
+## Conclusion
+
+Analyze Apache access log is just one way how to use power of InfluxDB and Fluentd. 
+There are other things you could do with InfluxDB and Fluentd and next step could be a [Monitoring and alerting](https://v2.docs.influxdata.com/v2.0/monitor-alert/#manage-your-monitoring-and-alerting-pipeline). 
 
 ### Links
 
