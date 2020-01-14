@@ -56,8 +56,10 @@ curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json'
 ```
 
 ### Step 3 — Prepare Fluentd Docker
-We have to prepare a create docker image that will contains Fluentd with configured [InfluxDB 2 output plugin](https://github.com/bonitoo-io/influxdb-plugin-fluent/).
+We have to prepare a docker image that will contains Fluentd with configured [InfluxDB 2 output plugin](https://github.com/bonitoo-io/influxdb-plugin-fluent/).
 
+Fluentd is configured to parse incoming events with tag `httpd.access` by regexp: `/^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^ ]*) +\S*)?" (?<code>[^ ]*) (?<size>[^ ]*)$/` to structured event with: `time`, `host`, `user`, `method`, `code` and `size`.
+These structured events are routed to InfluxDB 2 output plugin. 
 #### Required files:
 
 ##### Dockerfile
@@ -76,6 +78,7 @@ USER fluent
 ```
 
 ##### fluent.conf
+
 ```xml
 <source>
   @type forward
@@ -119,6 +122,18 @@ Build image:
 ```bash
 docker build -t fluentd_influx .
 ```
+### Step 4 — Start Fluentd image
+
+```bash
+docker run \
+       --detach \
+       --name fluentd_influx \
+       --network influx_network \
+       --publish 24224:24224 \
+       --publish 24220:24220 \
+       fluentd_influx
+```
+
 ### Step 5 — Import Dashboard
 
 Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
