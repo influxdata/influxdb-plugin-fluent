@@ -15,23 +15,22 @@ InfluxDB 2 provide a solution for realtime analysis and alerting over collected 
 
 The following demo show how to analyze logs from dockerized environment.
 
-> The steps from 1 to 3 could be skipped if you use a script:
+> The steps from 1 to 4 could be skipped if you use a script:
 >
 > [`run-example.sh`](run-example.sh)
 ### Prerequisites
 
 - Docker installed on your computer
 
-### Step 1 - Create Docker Network
+### Step 1 — Create Docker Network
 
 Create bridge network that allows smoothly communication between containers:
 
 ```bash
-docker network rm influx_network || true
 docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway 192.168.0.1
 ```
 
-### Step 2 - Start InfluxDB
+### Step 2 — Start InfluxDB
 
 Start latest `InfluxDB 2`:
 
@@ -56,8 +55,71 @@ curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json'
         }'
 ```
 
-### Step 3: 
-### Step 4 — Import Dashboard
+### Step 3 — Prepare Fluentd Docker
+We have to prepare a create docker image that will contains Fluentd with configured [InfluxDB 2 output plugin](https://github.com/bonitoo-io/influxdb-plugin-fluent/).
+
+#### Required files:
+
+##### Dockerfile
+
+```dockerfile
+FROM fluent/fluentd:edge-debian
+
+USER root
+
+RUN fluent-gem install influxdb-plugin-fluent
+
+COPY ./fluent.conf /fluentd/etc/
+COPY entrypoint.sh /bin/
+
+USER fluent
+```
+
+##### fluent.conf
+```xml
+<source>
+  @type forward
+  port 24224
+  bind 0.0.0.0
+</source>
+<source>
+  @type monitor_agent
+  bind 0.0.0.0
+  port 24220
+</source>
+<filter httpd.access>
+  @type parser
+  key_name log
+  <parse>
+    @type regexp
+    expression /^(?<host>[^ ]*) [^ ]* (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^ ]*) +\S*)?" (?<code>[^ ]*) (?<size>[^ ]*)$/
+    time_format %d/%b/%Y:%H:%M:%S %z
+  </parse>
+</filter>
+<match httpd.access>
+  @type copy
+  <store>
+    @type influxdb2
+    url http://influxdb_v2:9999
+    token my-token
+    bucket my-bucket
+    org my-org
+    use_ssl false
+    time_precision s
+    tag_keys ["method", "host", "path"]
+    <buffer tag>
+      @type memory
+      flush_interval 5
+    </buffer>
+  </store>
+</match>
+```
+Build image: 
+
+```bash
+docker build -t fluentd_influx .
+```
+### Step 5 — Import Dashboard
 
 Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
 
