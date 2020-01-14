@@ -59,7 +59,7 @@ docker run \
 # Build actual version of output plugin
 #
 cd "${SCRIPT_PATH}"/../
-docker run --rm -v "$PWD":/usr/src/app -w /usr/src/app ruby:2.6 gem build influxdb-plugin-fluent.gemspec \
+docker run --rm -v "${SCRIPT_PATH}/../":/usr/src/app -w /usr/src/app ruby:2.6 gem build influxdb-plugin-fluent.gemspec \
   -o ./examples/fluentd/influxdb-plugin-fluent.gem
 
 #
@@ -110,3 +110,5 @@ docker run \
         russmckendrick/ab bash /tmp/load.sh
 
 docker logs -f fluentd_influx
+
+#curl -i -X POST -H "Content-Type: application/json" -H "Authorization: Token my-token" "http://localhost:9999/orgs/3c7a552ae6b01ebd/dashboards/import" -d @influxdb/web_app_access_dashboard.json

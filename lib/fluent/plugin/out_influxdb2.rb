@@ -143,6 +143,6 @@ class InfluxDBOutput < Fluent::Plugin::Output
       points << point
     end
     @write_api.write(data: points)
-    log.trace "Written points: #{points}"
+    log.debug "Written points: #{points}"
   end
 end
