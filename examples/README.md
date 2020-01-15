@@ -3,6 +3,8 @@
 InfluxDB 2 and Fluentd together are able to collect large amount of logs and transform it to useful metrics. 
 InfluxDB 2 provide a solution for realtime analysis and alerting over collected metrics.
 
+<img src="architecture.png" height="400px">
+
 ## Introduction
 
 [Fluentd](https://www.fluentd.org/architecture) is an open source data collector, which lets you unify the data collection and consumption for a better use and understanding of data.
