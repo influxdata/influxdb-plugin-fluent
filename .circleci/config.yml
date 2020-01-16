@@ -115,7 +115,7 @@ jobs:
       - run:
           name: Deploy pre-release into https://rubygems.org
           command: |
-            echo "TODO"
+            gem push influxdb-plugin-fluent-*.pre.$CIRCLE_BUILD_NUM.gem
 workflows:
   version: 2
   build:
