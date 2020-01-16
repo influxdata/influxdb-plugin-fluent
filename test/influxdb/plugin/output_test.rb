@@ -49,6 +49,13 @@ class InfluxDBOutputTest < Minitest::Test
     Fluent::Test::Driver::Output.new(MockInfluxDBOutput).configure(conf)
   end
 
+  def test_configuration
+    driver = create_driver
+    driver.run(default_tag: 'input.influxdb2') do
+    end
+    assert_equal driver.instance.multi_workers_ready?, true
+  end
+
   def test_time_precision_parameter
     refute_nil create_driver
     conf = %(
