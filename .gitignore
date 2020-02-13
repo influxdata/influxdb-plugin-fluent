@@ -11,3 +11,4 @@
 /test/reports/
 .rakeTasks
 **/influxdb-plugin-fluent*.gem
+/vendor/
