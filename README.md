@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/github/license/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/pulls)
+[![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
 This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
