@@ -34,12 +34,12 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'InfluxDB 2 output plugin for Fluentd'
   spec.description   = 'A buffered output plugin for Fluentd and InfluxDB 2'
-  spec.homepage      = 'https://github.com/bonitoo-io/influxdb-plugin-fluent'
+  spec.homepage      = 'https://github.com/influxdata/influxdb-plugin-fluent'
   spec.license       = 'MIT'
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/bonitoo-io/influxdb-plugin-fluent'
-  spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/bonitoo-io/influxdb-plugin-fluent/master/CHANGELOG.md'
+  spec.metadata['source_code_uri'] = 'https://github.com/influxdata/influxdb-plugin-fluent'
+  spec.metadata['changelog_uri'] = 'https://raw.githubusercontent.com/influxdata/influxdb-plugin-fluent/master/CHANGELOG.md'
 
   spec.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features|smoke)/})

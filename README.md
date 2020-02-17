@@ -1,11 +1,11 @@
 # influxdb-plugin-fluent
 
-[![CircleCI](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluent.svg?style=svg)](https://circleci.com/gh/bonitoo-io/influxdb-plugin-fluent)
-[![codecov](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/bonitoo-io/influxdb-plugin-fluent)
+[![CircleCI](https://circleci.com/gh/influxdata/influxdb-plugin-fluent.svg?style=svg)](https://circleci.com/gh/influxdata/influxdb-plugin-fluent)
+[![codecov](https://codecov.io/gh/influxdata/influxdb-plugin-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/influxdata/influxdb-plugin-fluent)
 [![Gem Version](https://badge.fury.io/rb/influxdb-plugin-fluent.svg)](https://badge.fury.io/rb/influxdb-plugin-fluent)
-[![License](https://img.shields.io/github/license/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/bonitoo-io/influxdb-plugin-fluent.svg)](https://github.com/bonitoo-io/influxdb-plugin-fluent/pulls)
+[![License](https://img.shields.io/github/license/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues-raw/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/pulls)
 [![Slack Status](https://img.shields.io/badge/slack-join_chat-white.svg?logo=slack&style=social)](https://www.influxdata.com/slack)
 
 This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
@@ -106,7 +106,7 @@ Store Fluentd event to InfluxDB 2 database.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bonitoo-io/influxdb-plugin-fluent.
+Bug reports and pull requests are welcome on GitHub at https://github.com/influxdata/influxdb-plugin-fluent.
 
 ## License
 
