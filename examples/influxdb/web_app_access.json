@@ -20,19 +20,23 @@
      "data": [
       {
        "type": "cell",
-       "id": "051559b2aa2a2000"
+       "id": "0541daaaa9471000"
       },
       {
        "type": "cell",
-       "id": "051559b2ae2a2000"
+       "id": "0541daaaaac71000"
       },
       {
        "type": "cell",
-       "id": "051559b2af6a2000"
+       "id": "0541daaaab071000"
       },
       {
        "type": "cell",
-       "id": "05155aef3daa2000"
+       "id": "0541daaaabc71000"
+      },
+      {
+       "type": "cell",
+       "id": "0541db0ef0871000"
       }
      ]
     },
@@ -43,7 +47,7 @@
   },
   "included": [
    {
-    "id": "051559b2aa2a2000",
+    "id": "0541daaaa9471000",
     "type": "cell",
     "attributes": {
      "x": 0,
@@ -55,31 +59,13 @@
      "view": {
       "data": {
        "type": "view",
-       "id": "051559b2aa2a2000"
+       "id": "0541daaaa9471000"
       }
      }
     }
    },
    {
-    "id": "051559b2ae2a2000",
-    "type": "cell",
-    "attributes": {
-     "x": 0,
-     "y": 4,
-     "w": 12,
-     "h": 4
-    },
-    "relationships": {
-     "view": {
-      "data": {
-       "type": "view",
-       "id": "051559b2ae2a2000"
-      }
-     }
-    }
-   },
-   {
-    "id": "051559b2af6a2000",
+    "id": "0541daaaaac71000",
     "type": "cell",
     "attributes": {
      "x": 4,
@@ -91,13 +77,31 @@
      "view": {
       "data": {
        "type": "view",
-       "id": "051559b2af6a2000"
+       "id": "0541daaaaac71000"
       }
      }
     }
    },
    {
-    "id": "05155aef3daa2000",
+    "id": "0541daaaab071000",
+    "type": "cell",
+    "attributes": {
+     "x": 6,
+     "y": 4,
+     "w": 6,
+     "h": 4
+    },
+    "relationships": {
+     "view": {
+      "data": {
+       "type": "view",
+       "id": "0541daaaab071000"
+      }
+     }
+    }
+   },
+   {
+    "id": "0541daaaabc71000",
     "type": "cell",
     "attributes": {
      "x": 8,
@@ -109,14 +113,32 @@
      "view": {
       "data": {
        "type": "view",
-       "id": "05155aef3daa2000"
+       "id": "0541daaaabc71000"
+      }
+     }
+    }
+   },
+   {
+    "id": "0541db0ef0871000",
+    "type": "cell",
+    "attributes": {
+     "x": 0,
+     "y": 4,
+     "w": 6,
+     "h": 4
+    },
+    "relationships": {
+     "view": {
+      "data": {
+       "type": "view",
+       "id": "0541db0ef0871000"
       }
      }
     }
    },
    {
     "type": "view",
-    "id": "051559b2aa2a2000",
+    "id": "0541daaaa9471000",
     "attributes": {
      "name": "Requests Count",
      "properties": {
@@ -164,9 +186,57 @@
    },
    {
     "type": "view",
-    "id": "051559b2ae2a2000",
+    "id": "0541daaaaac71000",
     "attributes": {
-     "name": "Requests",
+     "name": "Request Size",
+     "properties": {
+      "shape": "chronograf-v2",
+      "type": "single-stat",
+      "queries": [
+       {
+        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")\n  |> filter(fn: (r) => r.method == \"GET\")\n  |> filter(fn: (r) => r._field == \"size\")\n  |> drop(columns: [\"path\"])\n  |> toInt()\n  |> sum(column: \"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: r._value / 1024\n    })\n  )",
+        "editMode": "advanced",
+        "name": "",
+        "builderConfig": {
+         "buckets": [],
+         "tags": [
+          {
+           "key": "_measurement",
+           "values": []
+          }
+         ],
+         "functions": [],
+         "aggregateWindow": {
+          "period": "auto"
+         }
+        }
+       }
+      ],
+      "prefix": "",
+      "suffix": " KiB",
+      "colors": [
+       {
+        "id": "base",
+        "type": "text",
+        "hex": "#F48D38",
+        "name": "tiger",
+        "value": 0
+       }
+      ],
+      "decimalPlaces": {
+       "isEnforced": true,
+       "digits": 2
+      },
+      "note": "",
+      "showNoteWhenEmpty": false
+     }
+    }
+   },
+   {
+    "type": "view",
+    "id": "0541daaaab071000",
+    "attributes": {
+     "name": "Requests Count",
      "properties": {
       "shape": "chronograf-v2",
       "queries": [
@@ -251,55 +321,7 @@
    },
    {
     "type": "view",
-    "id": "051559b2af6a2000",
-    "attributes": {
-     "name": "Request Size",
-     "properties": {
-      "shape": "chronograf-v2",
-      "type": "single-stat",
-      "queries": [
-       {
-        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")\n  |> filter(fn: (r) => r.method == \"GET\")\n  |> filter(fn: (r) => r._field == \"size\")\n  |> drop(columns: [\"path\"])\n  |> toInt()\n  |> sum(column: \"_value\")\n  |> map(fn: (r) => ({\n      r with\n      _value: r._value / 1024\n    })\n  )",
-        "editMode": "advanced",
-        "name": "",
-        "builderConfig": {
-         "buckets": [],
-         "tags": [
-          {
-           "key": "_measurement",
-           "values": []
-          }
-         ],
-         "functions": [],
-         "aggregateWindow": {
-          "period": "auto"
-         }
-        }
-       }
-      ],
-      "prefix": "",
-      "suffix": " KiB",
-      "colors": [
-       {
-        "id": "base",
-        "type": "text",
-        "hex": "#F48D38",
-        "name": "tiger",
-        "value": 0
-       }
-      ],
-      "decimalPlaces": {
-       "isEnforced": true,
-       "digits": 2
-      },
-      "note": "",
-      "showNoteWhenEmpty": false
-     }
-    }
-   },
-   {
-    "type": "view",
-    "id": "05155aef3daa2000",
+    "id": "0541daaaabc71000",
     "attributes": {
      "name": "Success rate",
      "properties": {
@@ -352,6 +374,110 @@
       ],
       "decimalPlaces": {
        "isEnforced": true,
+       "digits": 2
+      },
+      "note": "",
+      "showNoteWhenEmpty": false
+     }
+    }
+   },
+   {
+    "type": "view",
+    "id": "0541db0ef0871000",
+    "attributes": {
+     "name": "Requests",
+     "properties": {
+      "shape": "chronograf-v2",
+      "type": "table",
+      "queries": [
+       {
+        "text": "from(bucket: \"my-bucket\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"httpd.access\")",
+        "editMode": "advanced",
+        "name": "",
+        "builderConfig": {
+         "buckets": [],
+         "tags": [
+          {
+           "key": "_measurement",
+           "values": []
+          }
+         ],
+         "functions": [],
+         "aggregateWindow": {
+          "period": "auto"
+         }
+        }
+       }
+      ],
+      "colors": [
+       {
+        "id": "base",
+        "type": "text",
+        "hex": "#00C9FF",
+        "name": "laser",
+        "value": 0
+       }
+      ],
+      "tableOptions": {
+       "verticalTimeAxis": true,
+       "sortBy": {
+        "internalName": "",
+        "displayName": "",
+        "visible": false
+       },
+       "wrapping": "",
+       "fixFirstColumn": false
+      },
+      "fieldOptions": [
+       {
+        "internalName": "_start",
+        "displayName": "_start",
+        "visible": false
+       },
+       {
+        "internalName": "_stop",
+        "displayName": "_stop",
+        "visible": false
+       },
+       {
+        "internalName": "_time",
+        "displayName": "Time",
+        "visible": true
+       },
+       {
+        "internalName": "host",
+        "displayName": "Host",
+        "visible": true
+       },
+       {
+        "internalName": "path",
+        "displayName": "Path",
+        "visible": true
+       },
+       {
+        "internalName": "method",
+        "displayName": "Method",
+        "visible": true
+       },
+       {
+        "internalName": "_field",
+        "displayName": "Field",
+        "visible": true
+       },
+       {
+        "internalName": "_value",
+        "displayName": "Value",
+        "visible": true
+       },
+       {
+        "internalName": "_measurement",
+        "displayName": "_measurement",
+        "visible": false
+       }
+      ],
+      "timeFormat": "YYYY-MM-DD HH:mm:ss",
+      "decimalPlaces": {
+       "isEnforced": false,
        "digits": 2
       },
       "note": "",
