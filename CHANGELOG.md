@@ -1,7 +1,10 @@
 ## 1.2.0 [unreleased]
 
 ### Security
-1. [#4](https://github.com/influxdata/influxdb-client-fluent/pull/4): Upgrade rake to version 12.3.3 - [CVE-2020-8130](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
+1. [#4](https://github.com/influxdata/influxdb-plugin-fluent/pull/4): Upgrade rake to version 12.3.3 - [CVE-2020-8130](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
+
+### Dependencies
+1. [#5](https://github.com/influxdata/influxdb-plugin-fluent/pull/5): Upgrade InfluxDB client
 
 ## 1.1.0 [2020-02-14]
 
