@@ -1,4 +1,4 @@
-## 1.2.0 [unreleased]
+## 1.2.0 [2020-03-13]
 
 ### Security
 1. [#4](https://github.com/influxdata/influxdb-plugin-fluent/pull/4): Upgrade rake to version 12.3.3 - [CVE-2020-8130](https://github.com/advisories/GHSA-jppv-gw3r-w3q8)
