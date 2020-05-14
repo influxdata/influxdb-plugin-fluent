@@ -19,7 +19,7 @@
 # THE SOFTWARE.
 
 require 'fluent/plugin/output'
-require 'influxdb2/client'
+require 'influxdb-client'
 
 # A buffered output plugin for Fluentd and InfluxDB 2
 class InfluxDBOutput < Fluent::Plugin::Output
