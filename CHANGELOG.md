@@ -1,4 +1,4 @@
-## 1.3.0 [unreleased]
+## 1.3.0 [2020-05-15]
 
 ### Dependencies
 1. [#6](https://github.com/influxdata/influxdb-plugin-fluent/pull/6): Upgrade InfluxDB client to 1.4.0
