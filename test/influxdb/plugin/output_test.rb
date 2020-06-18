@@ -363,6 +363,78 @@ class InfluxDBOutputTest < Minitest::Test
                      times: 1, body: 'h2o_tag level=2.0,location="europe" 1444897215000000000')
   end
 
+  def test_nested_field
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2,
+                             'nest' => { 'key' => 'nested value', 'deep' => { 'deep-key' => 'deep-value' }, 'a' => 25 })
+    end
+    body = 'h2o_tag level=2i,location="europe",nest.a=25i,nest.deep.deep-key="deep-value",nest.key="nested value" ' \
+'1444897215000000000'
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: body)
+  end
+
+  def test_kubernetes_structure
+    record = {
+      'docker' => { 'container_id' => '7ee0723e90d13df5ade6f5d524f23474461fcfeb48a90630d8b02b13c741550b' },
+      'kubernetes' => { 'container_name' => 'fluentd',
+                        'namespace_name' => 'default',
+                        'pod_name' => 'fluentd-49xk2',
+                        'container_image' => 'rawkode/fluentd:1',
+                        'container_image_id' =>
+                            'docker://sha256:90c288b8a09cc6ae98b04078afb10d9c380c0603a47745403461435073460f97',
+                        'pod_id' => 'c15ab1cb-0773-4ad7-a58b-f791ab34c62f',
+                        'host' => 'minikube',
+                        'labels' => {
+                          'controller-revision-hash' => '57748799f7',
+                          'pod-template-generation' => 2,
+                          'app_kubernetes_io/instance' => 'fluentd',
+                          'app_kubernetes_io/name' => 'fluentd'
+                        },
+                        'master_url' => 'https://10.96.0.1:443/api',
+                        'namespace_id' => '2b0bc75c-323a-4f04-9eec-02255a8d0044' },
+      'log' => '2020-06-17 13:19:42 +0000 [info]: #0 [filter_kube_metadata] stats - namespace_cache_size: 2, '\
+'pod_cache_size: 6, pod_cache_watch_updates: 1, namespace_cache_api_updates: 6, '\
+'pod_cache_api_updates: 6, id_cache_miss: 6\n',
+      'stream' => 'stdout'
+    }
+
+    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, record)
+    end
+    body = 'h2o_tag docker.container_id="7ee0723e90d13df5ade6f5d524f23474461fcfeb48a90630d8b02b13c741550b",'\
+'kubernetes.container_image="rawkode/fluentd:1",'\
+'kubernetes.container_image_id="docker://sha256:90c288b8a09cc6ae98b04078afb10d9c380c0603a47745403461435073460f97",'\
+'kubernetes.container_name="fluentd",kubernetes.host="minikube",'\
+'kubernetes.labels.app_kubernetes_io/instance="fluentd",kubernetes.labels.app_kubernetes_io/name="fluentd",'\
+'kubernetes.labels.controller-revision-hash="57748799f7",kubernetes.labels.pod-template-generation=2i,'\
+'kubernetes.master_url="https://10.96.0.1:443/api",kubernetes.namespace_id="2b0bc75c-323a-4f04-9eec-02255a8d0044",'\
+'kubernetes.namespace_name="default",kubernetes.pod_id="c15ab1cb-0773-4ad7-a58b-f791ab34c62f",'\
+'kubernetes.pod_name="fluentd-49xk2",log="2020-06-17 13:19:42 +0000 [info]: #0 [filter_kube_metadata] stats - '\
+'namespace_cache_size: 2, pod_cache_size: 6, pod_cache_watch_updates: 1, namespace_cache_api_updates: 6, '\
+'pod_cache_api_updates: 6, id_cache_miss: 6\\\n",stream="stdout" 1444897215000000000'
+    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: body)
+  end
+
   def emit_documents(driver, data = { 'location' => 'europe', 'level' => 2 })
     time = event_time('2015-10-15 8:20:15 UTC')
     driver.feed(time, data)
