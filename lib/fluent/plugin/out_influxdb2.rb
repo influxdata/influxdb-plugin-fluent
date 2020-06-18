@@ -128,14 +128,8 @@ class InfluxDBOutput < Fluent::Plugin::Output
       record.each_pair do |k, v|
         if k.eql?(@time_key)
           time_formatted = v
-        elsif @tag_keys.include?(k)
-          point.add_tag(k, v)
-        elsif @field_keys.empty? || @field_keys.include?(k)
-          if @field_cast_to_float & v.is_a?(Integer)
-            point.add_field(k, Float(v))
-          else
-            point.add_field(k, v)
-          end
+        else
+          _parse_field(k, v, point)
         end
         point.add_tag('fluentd', tag) if @tag_fluentd
       end
@@ -144,5 +138,23 @@ class InfluxDBOutput < Fluent::Plugin::Output
     end
     @write_api.write(data: points)
     log.debug "Written points: #{points}"
+  end
+
+  private
+
+  def _parse_field(key, value, point)
+    if @tag_keys.include?(key)
+      point.add_tag(key, value)
+    elsif @field_keys.empty? || @field_keys.include?(key)
+      if @field_cast_to_float & value.is_a?(Integer)
+        point.add_field(key, Float(value))
+      elsif value.is_a?(Hash)
+        value.each_pair do |nested_k, nested_v|
+          _parse_field("#{key}.#{nested_k}", nested_v, point)
+        end
+      else
+        point.add_field(key, value)
+      end
+    end
   end
 end
