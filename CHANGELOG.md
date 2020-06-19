@@ -1,4 +1,4 @@
-## 1.4.0 [unreleased]
+## 1.4.0 [2020-06-19]
 
 ### Features
 1. [#8](https://github.com/influxdata/influxdb-plugin-fluent/pull/8): Added support for nested fields

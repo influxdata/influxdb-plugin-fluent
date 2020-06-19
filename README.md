@@ -19,7 +19,7 @@ This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-plugin-fluent).  You can install the gem as follows:
 
 ```
-fluent-gem install influxdb-plugin-fluent -v 1.3.0
+fluent-gem install influxdb-plugin-fluent -v 1.4.0
 ```
 
 ## Plugins
