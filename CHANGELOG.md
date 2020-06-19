@@ -3,6 +3,9 @@
 ### Features
 1. [#8](https://github.com/influxdata/influxdb-plugin-fluent/pull/8): Added support for nested fields
 
+### Dependencies
+1. [#9](https://github.com/influxdata/influxdb-plugin-fluent/pull/9): Upgrade InfluxDB client to 1.5.0
+
 ## 1.3.0 [2020-05-15]
 
 ### Dependencies
