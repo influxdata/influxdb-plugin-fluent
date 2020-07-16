@@ -33,7 +33,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['jakub.bednar@gmail.com']
 
   spec.summary       = 'InfluxDB 2 output plugin for Fluentd'
-  spec.description   = 'The gem is renamed to fluent-plugin-influxdb-v2. A buffered output plugin for Fluentd and InfluxDB 2'
+  spec.description   = 'The gem is renamed to fluent-plugin-influxdb-v2. '\
+'A buffered output plugin for Fluentd and InfluxDB 2'
   spec.homepage      = 'https://github.com/influxdata/influxdb-plugin-fluent'
   spec.license       = 'MIT'
 
