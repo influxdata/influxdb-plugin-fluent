@@ -59,8 +59,8 @@ docker run \
 # Build actual version of output plugin
 #
 cd "${SCRIPT_PATH}"/../
-docker run --rm -v "${SCRIPT_PATH}/../":/usr/src/app -w /usr/src/app ruby:2.6 gem build influxdb-plugin-fluent.gemspec \
-  -o ./examples/fluentd/influxdb-plugin-fluent.gem
+docker run --rm -v "${SCRIPT_PATH}/../":/usr/src/app -w /usr/src/app ruby:2.6 gem build fluent-plugin-influxdb-v2.gemspec \
+  -o ./examples/fluentd/fluent-plugin-influxdb-v2.gem
 
 #
 # Build fluentd Docker image with output plugin

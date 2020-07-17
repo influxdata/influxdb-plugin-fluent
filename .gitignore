@@ -10,5 +10,5 @@
 /Gemfile.lock
 /test/reports/
 .rakeTasks
-**/influxdb-plugin-fluent*.gem
+**/fluent-plugin-influxdb-v2*.gem
 /vendor/

@@ -23,7 +23,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fluent/plugin/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'influxdb-plugin-fluent'
+  spec.name          = 'fluent-plugin-influxdb-v2'
   spec.version       = if ENV['CIRCLE_BUILD_NUM']
                          "#{InfluxDB2::Plugin::Fluent::VERSION}-#{ENV['CIRCLE_BUILD_NUM']}"
                        else
@@ -33,8 +33,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['jakub.bednar@gmail.com']
 
   spec.summary       = 'InfluxDB 2 output plugin for Fluentd'
-  spec.description   = 'The gem is renamed to fluent-plugin-influxdb-v2. '\
-'A buffered output plugin for Fluentd and InfluxDB 2'
+  spec.description   = 'A buffered output plugin for Fluentd and InfluxDB 2'
   spec.homepage      = 'https://github.com/influxdata/influxdb-plugin-fluent'
   spec.license       = 'MIT'
 
