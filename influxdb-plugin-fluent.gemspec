@@ -33,7 +33,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['jakub.bednar@gmail.com']
 
   spec.summary       = 'InfluxDB 2 output plugin for Fluentd'
-  spec.description   = 'A buffered output plugin for Fluentd and InfluxDB 2'
+  spec.description   = 'The gem is renamed to fluent-plugin-influxdb-v2. '\
+'A buffered output plugin for Fluentd and InfluxDB 2'
   spec.homepage      = 'https://github.com/influxdata/influxdb-plugin-fluent'
   spec.license       = 'MIT'
 
@@ -47,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.2.0'
 
   spec.add_runtime_dependency 'fluentd', '~> 1.8'
-  spec.add_runtime_dependency 'influxdb-client', '1.5.0'
+  spec.add_runtime_dependency 'influxdb-client', '1.6.0'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'codecov', '~> 0.1.16'

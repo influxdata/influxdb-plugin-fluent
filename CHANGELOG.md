@@ -1,5 +1,8 @@
 ## 1.5.0 [unreleased]
 
+### Dependencies
+1. [#11](https://github.com/influxdata/influxdb-plugin-fluent/pull/11): Upgrade InfluxDB client to 1.6.0
+
 ## 1.4.0 [2020-06-19]
 
 ### Features
