@@ -41,8 +41,8 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "influxdb-plugin-fluent.gemspec" }}-<< parameters.ruby-image >>
-            - gem-cache-{{ checksum "influxdb-plugin-fluent.gemspec" }}
+            - &cache-key gem-cache-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}-<< parameters.ruby-image >>
+            - gem-cache-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}
             - gem-cache-
       - run:
           name: Install dependencies
@@ -111,11 +111,11 @@ jobs:
       - run:
           name: Build a Gem bundle
           command: |
-            gem build influxdb-plugin-fluent.gemspec
+            gem build fluent-plugin-influxdb-v2.gemspec
       - run:
           name: Deploy pre-release into https://rubygems.org
           command: |
-            gem push influxdb-plugin-fluent-*.pre.$CIRCLE_BUILD_NUM.gem
+            gem push fluent-plugin-influxdb-v2-*.pre.$CIRCLE_BUILD_NUM.gem
 workflows:
   version: 2
   build:

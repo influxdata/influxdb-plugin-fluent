@@ -2,9 +2,9 @@ FROM fluent/fluentd:edge-debian
 
 USER root
 
-COPY ./influxdb-plugin-fluent.gem /fluentd/plugins
+COPY ./fluent-plugin-influxdb-v2.gem /fluentd/plugins
 
-RUN fluent-gem install /fluentd/plugins/influxdb-plugin-fluent.gem
+RUN fluent-gem install /fluentd/plugins/fluent-plugin-influxdb-v2.gem
 
 COPY ./fluent.conf /fluentd/etc/
 COPY entrypoint.sh /bin/

@@ -69,7 +69,7 @@ FROM fluent/fluentd:edge-debian
 
 USER root
 
-RUN fluent-gem install influxdb-plugin-fluent
+RUN fluent-gem install fluent-plugin-influxdb-v2
 
 COPY ./fluent.conf /fluentd/etc/
 COPY entrypoint.sh /bin/

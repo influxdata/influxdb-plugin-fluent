@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/influxdata/influxdb-plugin-fluent.svg?style=svg)](https://circleci.com/gh/influxdata/influxdb-plugin-fluent)
 [![codecov](https://codecov.io/gh/influxdata/influxdb-plugin-fluent/branch/master/graph/badge.svg)](https://codecov.io/gh/influxdata/influxdb-plugin-fluent)
-[![Gem Version](https://badge.fury.io/rb/influxdb-plugin-fluent.svg)](https://badge.fury.io/rb/influxdb-plugin-fluent)
+[![Gem Version](https://badge.fury.io/rb/fluent-plugin-influxdb-v2.svg)](https://badge.fury.io/rb/fluent-plugin-influxdb-v2)
 [![License](https://img.shields.io/github/license/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues-raw/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/influxdata/influxdb-plugin-fluent.svg)](https://github.com/influxdata/influxdb-plugin-fluent/pulls)
@@ -16,10 +16,10 @@ This repository contains the reference Fluentd plugin for the InfluxDB 2.0.
 
 ### Gems
 
-The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/influxdb-plugin-fluent).  You can install the gem as follows:
+The plugin is bundled as a gem and is hosted on [Rubygems](https://rubygems.org/gems/fluent-plugin-influxdb-v2).  You can install the gem as follows:
 
 ```
-fluent-gem install influxdb-plugin-fluent -v 1.5.0
+fluent-gem install fluent-plugin-influxdb-v2 -v 1.5.0
 ```
 
 ## Plugins

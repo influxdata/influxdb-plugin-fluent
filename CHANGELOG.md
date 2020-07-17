@@ -1,5 +1,7 @@
 ## 1.5.0 [2020-07-17]
 
+1. [#12](https://github.com/influxdata/influxdb-plugin-fluent/pull/12): Renamed gem to `fluent-plugin-influxdb-v2`
+
 ### Dependencies
 1. [#11](https://github.com/influxdata/influxdb-plugin-fluent/pull/11): Upgrade InfluxDB client to 1.6.0
 
