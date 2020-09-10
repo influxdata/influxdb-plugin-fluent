@@ -29,8 +29,8 @@ class InfluxDBOutput < Fluent::Plugin::Output
 
   DEFAULT_BUFFER_TYPE = 'memory'.freeze
 
-  config_param :url, :string, default: 'https://localhost:9999'
-  desc 'InfluxDB URL to connect to (ex. https://localhost:9999).'
+  config_param :url, :string, default: 'https://localhost:8086'
+  desc 'InfluxDB URL to connect to (ex. https://localhost:8086).'
 
   config_param :token, :string
   desc 'Access Token used for authenticating/authorizing the InfluxDB request sent by client.'

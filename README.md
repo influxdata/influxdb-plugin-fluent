@@ -32,7 +32,7 @@ Store Fluentd event to InfluxDB 2 database.
 
 | Option | Description | Type | Default |
 |---|---|---|---|
-| url | InfluxDB URL to connect to (ex. https://localhost:9999). | String | https://localhost:9999 |
+| url | InfluxDB URL to connect to (ex. https://localhost:8086). | String | https://localhost:8086 |
 | token | Access Token used for authenticating/authorizing the InfluxDB request sent by client. | String | |
 | use_ssl | Turn on/off SSL for HTTP communication. | bool | true |
 | bucket | Specifies the destination bucket for writes. | String | |
@@ -51,8 +51,8 @@ Store Fluentd event to InfluxDB 2 database.
 <match influxdb2.**>
     @type influxdb2
 
-    # InfluxDB URL to connect to (ex. https://localhost:9999).
-    url             https://localhost:9999
+    # InfluxDB URL to connect to (ex. https://localhost:8086).
+    url             https://localhost:8086
     # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
     token           my-token
 
@@ -69,8 +69,8 @@ Store Fluentd event to InfluxDB 2 database.
 <match influxdb2.**>
     @type influxdb2
 
-    # InfluxDB URL to connect to (ex. https://localhost:9999).
-    url                     https://localhost:9999
+    # InfluxDB URL to connect to (ex. https://localhost:8086).
+    url                     https://localhost:8086
     # Access Token used for authenticating/authorizing the InfluxDB request sent by client.
     token                   my-token
     # Turn on/off SSL for HTTP communication.

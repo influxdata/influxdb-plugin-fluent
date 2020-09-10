@@ -37,15 +37,16 @@ Start latest `InfluxDB 2`:
 ```bash
 docker run \
        --detach \
+       --env INFLUXD_HTTP_BIND_ADDRESS=:8086 \
        --name influxdb_v2 \
        --network influx_network \
-       --publish 9999:9999 \
+       --publish 8086:8086 \
        quay.io/influxdb/influxdb:2.0.0-beta
 ```
 
 Create default organization, user and bucket:
 ```bash
-curl -i -X POST http://localhost:9999/api/v2/setup -H 'accept: application/json' \
+curl -i -X POST http://localhost:8086/api/v2/setup -H 'accept: application/json' \
     -d '{
             "username": "my-user",
             "password": "my-password",
@@ -103,7 +104,7 @@ USER fluent
   @type copy
   <store>
     @type influxdb2
-    url http://influxdb_v2:9999
+    url http://influxdb_v2:8086
     token my-token
     bucket my-bucket
     org my-org
@@ -161,7 +162,7 @@ curl http://localhost:8080/not_exists
 
 ### Step 7 — Import Dashboard
 
-Open [InfluxDB](http://localhost:9999) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
+Open [InfluxDB](http://localhost:8086) and import dashboard [web_app_access.json](influxdb/web_app_access.json) by following steps:
 
 ```
 username: my-user
