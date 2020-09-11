@@ -151,7 +151,7 @@ class InfluxDBOutputTest < Minitest::Test
   end
 
   def test_measurement_as_parameter
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -164,12 +164,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'test') do
       emit_documents(driver)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o level=2i,location="europe" 1444897215000000000')
   end
 
   def test_measurement_as_tag
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -181,12 +181,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag level=2i,location="europe" 1444897215000000000')
   end
 
   def test_tag_keys
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -198,12 +198,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag,location=europe level=2i 1444897215000000000')
   end
 
   def test_tag_fluentd
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -217,12 +217,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'system.logs') do
       emit_documents(driver)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o,fluentd=system.logs,location=europe level=2i 1444897215000000000')
   end
 
   def test_field_keys
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -235,12 +235,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag,location=europe level=2i 1444897215000000000')
   end
 
   def test_time_precision_ns
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -253,12 +253,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000000000')
   end
 
   def test_time_integer
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -269,12 +269,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       driver.feed(123_465_789, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag level=2i,location="europe",version="v.10" 123465789')
   end
 
   def test_time_precision_us
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=us')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=us')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -287,12 +287,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=us',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=us',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000000')
   end
 
   def test_time_precision_ms
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ms')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ms')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -305,12 +305,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ms',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ms',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215000')
   end
 
   def test_time_precision_s
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=s')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=s')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -323,12 +323,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10')
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=s',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=s',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1444897215')
   end
 
   def test_time_key
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -342,12 +342,12 @@ class InfluxDBOutputTest < Minitest::Test
       emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10',
                              'time' => 1_544_897_215_000_000_000)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1544897215000000000')
   end
 
   def test_field_cast_to_float
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -359,12 +359,12 @@ class InfluxDBOutputTest < Minitest::Test
     driver.run(default_tag: 'h2o_tag') do
       emit_documents(driver)
     end
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'h2o_tag level=2.0,location="europe" 1444897215000000000')
   end
 
   def test_nested_field
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -379,7 +379,7 @@ class InfluxDBOutputTest < Minitest::Test
     end
     body = 'h2o_tag level=2i,location="europe",nest.a=25i,nest.deep.deep-key="deep-value",nest.key="nested value" ' \
 '1444897215000000000'
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: body)
   end
 
@@ -408,7 +408,7 @@ class InfluxDBOutputTest < Minitest::Test
       'stream' => 'stdout'
     }
 
-    stub_request(:any, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)
     driver = create_driver(%(
       @type influxdb2
@@ -431,7 +431,7 @@ class InfluxDBOutputTest < Minitest::Test
 'kubernetes.pod_name="fluentd-49xk2",log="2020-06-17 13:19:42 +0000 [info]: #0 [filter_kube_metadata] stats - '\
 'namespace_cache_size: 2, pod_cache_size: 6, pod_cache_watch_updates: 1, namespace_cache_api_updates: 6, '\
 'pod_cache_api_updates: 6, id_cache_miss: 6\\\n",stream="stdout" 1444897215000000000'
-    assert_requested(:post, 'https://localhost:9999/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: body)
   end
 

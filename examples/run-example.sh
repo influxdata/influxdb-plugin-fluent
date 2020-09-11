@@ -45,9 +45,10 @@ docker network create -d bridge influx_network --subnet 192.168.0.0/24 --gateway
 #
 docker run \
        --detach \
+       --env INFLUXD_HTTP_BIND_ADDRESS=:8086 \
        --name influxdb_v2 \
        --network influx_network \
-       --publish 9999:9999 \
+       --publish 8086:8086 \
        quay.io/influxdb/influxdb:2.0.0-beta
 
 #
@@ -110,4 +111,4 @@ docker run \
 
 docker logs -f fluentd_influx
 
-#curl -i -X POST -H "Content-Type: application/json" -H "Authorization: Token my-token" "http://localhost:9999/orgs/3c7a552ae6b01ebd/dashboards/import" -d @influxdb/web_app_access_dashboard.json
+#curl -i -X POST -H "Content-Type: application/json" -H "Authorization: Token my-token" "http://localhost:8086/orgs/3c7a552ae6b01ebd/dashboards/import" -d @influxdb/web_app_access_dashboard.json
