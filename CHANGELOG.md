@@ -3,6 +3,9 @@
 ### API
  1. [#15](https://github.com/influxdata/influxdb-plugin-fluent/pull/15): Default port changed from 9999 -> 8086
 
+### Dependencies
+1. [#16](https://github.com/influxdata/influxdb-plugin-fluent/pull/16): Upgrade InfluxDB client to 1.8.0
+
 ## 1.5.0 [2020-07-17]
 
 1. [#12](https://github.com/influxdata/influxdb-plugin-fluent/pull/12): Renamed gem to `fluent-plugin-influxdb-v2`
