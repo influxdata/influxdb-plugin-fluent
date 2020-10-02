@@ -1,4 +1,4 @@
-## 1.6.0 [unreleased]
+## 1.6.0 [2020-10-02]
 
 ### API
  1. [#15](https://github.com/influxdata/influxdb-plugin-fluent/pull/15): Default port changed from 9999 -> 8086
