@@ -1,9 +1,12 @@
 ## 1.7.0 [unreleased]
 
+### CI
+1. [#18](https://github.com/influxdata/influxdb-plugin-fluent/pull/18): Updated default docker image to v2.0.2
+
 ## 1.6.0 [2020-10-02]
 
 ### API
- 1. [#15](https://github.com/influxdata/influxdb-plugin-fluent/pull/15): Default port changed from 9999 -> 8086
+1. [#15](https://github.com/influxdata/influxdb-plugin-fluent/pull/15): Default port changed from 9999 -> 8086
 
 ### Dependencies
 1. [#16](https://github.com/influxdata/influxdb-plugin-fluent/pull/16): Upgrade InfluxDB client to 1.8.0

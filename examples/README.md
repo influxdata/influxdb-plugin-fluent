@@ -41,7 +41,7 @@ docker run \
        --name influxdb_v2 \
        --network influx_network \
        --publish 8086:8086 \
-       quay.io/influxdb/influxdb:2.0.0-rc
+       quay.io/influxdb/influxdb:v2.0.2
 ```
 
 Create default organization, user and bucket:
