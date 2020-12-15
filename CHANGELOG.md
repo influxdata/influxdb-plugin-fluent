@@ -1,7 +1,7 @@
 ## 1.7.0 [unreleased]
 
 ### CI
-1. [#18](https://github.com/influxdata/influxdb-plugin-fluent/pull/18): Updated default docker image to v2.0.2
+1. [#19](https://github.com/influxdata/influxdb-plugin-fluent/pull/19): Updated default docker image to v2.0.3
 
 ## 1.6.0 [2020-10-02]
 
