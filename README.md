@@ -35,6 +35,7 @@ Store Fluentd event to InfluxDB 2 database.
 | url | InfluxDB URL to connect to (ex. https://localhost:8086). | String | https://localhost:8086 |
 | token | Access Token used for authenticating/authorizing the InfluxDB request sent by client. | String | |
 | use_ssl | Turn on/off SSL for HTTP communication. | bool | true |
+| verify_mode | Sets the flags for the certification verification at beginning of SSL/TLS session. | `"#{OpenSSL::SSL::VERIFY_NONE}"` or `"#{OpenSSL::SSL::VERIFY_PEER}"` | none |
 | bucket | Specifies the destination bucket for writes. | String | |
 | org | Specifies the destination organization for writes. | String | |
 | measurement | The name of the measurement. If not specified, Fluentd's tag is used. | String | nil |
@@ -75,6 +76,9 @@ Store Fluentd event to InfluxDB 2 database.
     token                   my-token
     # Turn on/off SSL for HTTP communication.
     use_ssl                 true
+    # Sets the flags for the certification verification at beginning of SSL/TLS session.
+    # For more info see - https://docs.ruby-lang.org/en/3.0.0/Net/HTTP.html#verify_mode.
+    verify_mode             "#{OpenSSL::SSL::VERIFY_NONE}"
 
     # Specifies the destination bucket for writes.
     bucket                  my-bucket
