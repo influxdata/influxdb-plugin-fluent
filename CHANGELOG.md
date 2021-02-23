@@ -1,7 +1,10 @@
 ## 1.7.0 [unreleased]
 
+### Features
+1. [#23](https://github.com/influxdata/influxdb-plugin-fluent/pull/23): Added possibility to specify the certification verification behaviour
+
 ### CI
-1. [#19](https://github.com/influxdata/influxdb-plugin-fluent/pull/19): Updated default docker image to v2.0.3
+1. [#21](https://github.com/influxdata/influxdb-plugin-fluent/pull/21): Updated default docker image to v2.0.4
 
 ## 1.6.0 [2020-10-02]
 
