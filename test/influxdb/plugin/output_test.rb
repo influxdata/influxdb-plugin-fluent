@@ -117,6 +117,41 @@ class InfluxDBOutputTest < Minitest::Test
     assert_equal '\'use_ssl\' parameter is required but nil is specified', error.message
   end
 
+  def test_verify_mode_default
+    driver = create_driver(%(
+        @type influxdb2
+        bucket my-bucket
+        org my-org
+        token my-token
+    ))
+
+    assert_nil driver.instance.verify_mode
+  end
+
+  def test_verify_mode_none
+    driver = create_driver(%(
+        @type influxdb2
+        bucket my-bucket
+        org my-org
+        token my-token
+        verify_mode "#{OpenSSL::SSL::VERIFY_NONE}"
+    ))
+
+    assert_equal OpenSSL::SSL::VERIFY_NONE, driver.instance.verify_mode
+  end
+
+  def test_verify_mode_peer
+    driver = create_driver(%(
+        @type influxdb2
+        bucket my-bucket
+        org my-org
+        token my-token
+        verify_mode "#{OpenSSL::SSL::VERIFY_PEER}"
+    ))
+
+    assert_equal OpenSSL::SSL::VERIFY_PEER, driver.instance.verify_mode
+  end
+
   def test_bucket_parameter
     error = assert_raises Fluent::ConfigError do
       create_driver(%(

@@ -38,6 +38,10 @@ class InfluxDBOutput < Fluent::Plugin::Output
   config_param :use_ssl, :bool, default: true
   desc 'Turn on/off SSL for HTTP communication.'
 
+  config_param :verify_mode, :integer, default: nil
+  desc 'Sets the flags for the certification verification at beginning of SSL/TLS session. ' \
+      'For more info see - https://docs.ruby-lang.org/en/3.0.0/Net/HTTP.html#verify_mode.'
+
   config_param :bucket, :string
   desc 'Specifies the destination bucket for writes.'
 
@@ -97,8 +101,9 @@ class InfluxDBOutput < Fluent::Plugin::Output
   def start
     super
     log.info  "Connecting to InfluxDB: url: #{@url}, bucket: #{@bucket}, org: #{@org}, precision = #{@precision}, " \
-              "use_ssl = #{@use_ssl}"
-    @client = InfluxDB2::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision, use_ssl: @use_ssl)
+              "use_ssl = #{@use_ssl}, verify_mode = #{@verify_mode}"
+    @client = InfluxDB2::Client.new(@url, @token, bucket: @bucket, org: @org, precision: @precision, use_ssl: @use_ssl,
+                                                  verify_mode: @verify_mode)
     @write_api = @client.create_write_api
   end
 
