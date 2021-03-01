@@ -4,7 +4,7 @@
 1. [#23](https://github.com/influxdata/influxdb-plugin-fluent/pull/23): Added possibility to specify the certification verification behaviour
 
 ### CI
-1. [#21](https://github.com/influxdata/influxdb-plugin-fluent/pull/21): Updated default docker image to v2.0.4
+1. [#24](https://github.com/influxdata/influxdb-plugin-fluent/pull/24): Updated stable image to `influxdb:latest` and nightly to `quay.io/influxdb/influxdb:nightly`
 
 ## 1.6.0 [2020-10-02]
 
