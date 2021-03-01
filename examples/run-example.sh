@@ -49,7 +49,7 @@ docker run \
        --name influxdb_v2 \
        --network influx_network \
        --publish 8086:8086 \
-       quay.io/influxdb/influxdb:v2.0.4
+       influxdb:latest
 
 #
 # Post onBoarding request to InfluxDB 2
