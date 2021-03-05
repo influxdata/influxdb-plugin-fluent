@@ -1,4 +1,4 @@
-## 1.7.0 [unreleased]
+## 1.7.0 [2021-03-05]
 
 ### Features
 1. [#23](https://github.com/influxdata/influxdb-plugin-fluent/pull/23): Added possibility to specify the certification verification behaviour
