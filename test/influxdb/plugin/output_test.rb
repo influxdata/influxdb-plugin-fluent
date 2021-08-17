@@ -475,4 +475,39 @@ class InfluxDBOutputTest < Minitest::Test
     driver.feed(time, data)
     time
   end
+
+  def test_bucket_as_placeholder
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=placeholder_h2o_tag&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket placeholder_${tag}
+      org my-org
+      time_precision ns
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver)
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=placeholder_h2o_tag&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag level=2i,location="europe" 1444897215000000000')
+  end
+
+  def test_measurement_as_placeholder
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+      measurement placeholder_${tag}
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver)
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'placeholder_h2o_tag level=2i,location="europe" 1444897215000000000')
+  end
 end
