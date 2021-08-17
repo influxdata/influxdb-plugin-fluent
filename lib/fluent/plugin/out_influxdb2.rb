@@ -149,14 +149,12 @@ class InfluxDBOutput < Fluent::Plugin::Output
 
   def expand_placeholders(chunk)
     bucket = extract_placeholders(@bucket, chunk)
-
-    if @measurement
-      measurement = extract_placeholders(@measurement, chunk)
-    else
-      measurement = chunk.metadata.tag
-    end
-
-    return bucket, measurement
+    measurement = if @measurement
+                    extract_placeholders(@measurement, chunk)
+                  else
+                    chunk.metadata.tag
+                  end
+    [bucket, measurement]
   end
 
   def _parse_field(key, value, point)
