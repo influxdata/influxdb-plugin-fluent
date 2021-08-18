@@ -119,7 +119,7 @@ class InfluxDBOutput < Fluent::Plugin::Output
   def write(chunk)
     points = []
     tag = chunk.metadata.tag
-    measurement = @measurement || tag
+    bucket, measurement = expand_placeholders(chunk)
     chunk.msgpack_each do |time, record|
       if time.is_a?(Integer)
         time_formatted = time
@@ -141,11 +141,21 @@ class InfluxDBOutput < Fluent::Plugin::Output
       point.time(time_formatted, @precision)
       points << point
     end
-    @write_api.write(data: points)
+    @write_api.write(data: points, bucket: bucket)
     log.debug "Written points: #{points}"
   end
 
   private
+
+  def expand_placeholders(chunk)
+    bucket = extract_placeholders(@bucket, chunk)
+    measurement = if @measurement
+                    extract_placeholders(@measurement, chunk)
+                  else
+                    chunk.metadata.tag
+                  end
+    [bucket, measurement]
+  end
 
   def _parse_field(key, value, point)
     if @tag_keys.include?(key)
