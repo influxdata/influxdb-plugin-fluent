@@ -1,4 +1,4 @@
-## 1.8.0 [unreleased]
+## 1.8.0 [2021-08-20]
 
 ### Features
 1. [#26](https://github.com/influxdata/influxdb-plugin-fluent/pull/26): Add placeholder support for bucket & measurement fields
