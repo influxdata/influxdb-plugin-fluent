@@ -41,9 +41,9 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}-<< parameters.ruby-image >>
-            - gem-cache-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}
-            - gem-cache-
+            - &cache-key gem-cache-v2-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}-<< parameters.ruby-image >>
+            - gem-cache-v2-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}
+            - gem-cache-v2-
       - run:
           name: Install dependencies
           command: |
@@ -75,7 +75,7 @@ jobs:
     parameters:
       ruby-image:
         type: string
-        default: &default-ruby-image "circleci/ruby:2.6-stretch"
+        default: &default-ruby-image "cimg/ruby:2.6"
       influxdb-image:
         type: string
         default: &default-influxdb-image "influxdb:latest"
@@ -119,7 +119,7 @@ workflows:
     jobs:
       - tests-ruby:
           name: ruby-2.7
-          ruby-image: "circleci/ruby:2.7-buster"
+          ruby-image: "cimg/ruby:2.7"
       - tests-ruby:
           name: ruby-2.6
       - tests-ruby:
@@ -127,10 +127,10 @@ workflows:
           influxdb-image: "quay.io/influxdb/influxdb:nightly"
       - tests-ruby:
           name: ruby-2.5
-          ruby-image: "circleci/ruby:2.5-stretch"
+          ruby-image: "cimg/ruby:2.5"
       - tests-ruby:
           name: ruby-2.4
-          ruby-image: "circleci/ruby:2.4-stretch"
+          ruby-image: "cimg/ruby:2.4"
       - deploy-preview:
           requires:
             - ruby-2.7
