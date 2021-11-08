@@ -41,9 +41,9 @@ commands:
       - restore_cache:
           name: Restoring Gem Cache
           keys:
-            - &cache-key gem-cache-v2-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}-<< parameters.ruby-image >>
-            - gem-cache-v2-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}
-            - gem-cache-v2-
+            - &cache-key gem-cache-v3-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}-<< parameters.ruby-image >>
+            - gem-cache-v3-{{ checksum "fluent-plugin-influxdb-v2.gemspec" }}
+            - gem-cache-v3-
       - run:
           name: Install dependencies
           command: |
@@ -120,6 +120,9 @@ workflows:
       - tests-ruby:
           name: ruby-2.7
           ruby-image: "cimg/ruby:2.7"
+      - tests-ruby:
+          name: ruby-3.0
+          ruby-image: "cimg/ruby:3.0"
       - tests-ruby:
           name: ruby-2.6
       - tests-ruby:
