@@ -9,6 +9,7 @@
 
 ### CI
 1. [#27](https://github.com/influxdata/influxdb-plugin-fluent/pull/27): Switch to next-gen CircleCI's convenience images
+1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Add Ruby 3.0 into CI
 
 ## 1.8.0 [2021-08-20]
 
