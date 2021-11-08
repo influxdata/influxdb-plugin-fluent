@@ -73,6 +73,11 @@ class InfluxDBOutput < Fluent::Plugin::Output
   desc 'A name of the record key that used as a \'timestamp\' instead of event timestamp.' \
       'If a record key doesn\'t exists or hasn\'t value then is used event timestamp.'
 
+  config_param :line_protocol_key, :string, default: nil
+  desc 'A name of the record key that contains \'LineProtocol\'.' \
+      'The value of this key is used for ingesting data into InfluxDB.' \
+      'For more info see - https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/.'
+
   config_section :buffer do
     config_set_default :@type, DEFAULT_BUFFER_TYPE
     config_set_default :chunk_keys, ['tag']
@@ -121,22 +126,30 @@ class InfluxDBOutput < Fluent::Plugin::Output
     tag = chunk.metadata.tag
     bucket, measurement = expand_placeholders(chunk)
     chunk.msgpack_each do |time, record|
-      time_formatted = _format_time(time)
-      point = InfluxDB2::Point
-              .new(name: measurement)
-      record.each_pair do |k, v|
-        if k.eql?(@time_key)
-          time_formatted = _format_time(v)
-        else
-          _parse_field(k, v, point)
+      if @line_protocol_key
+        points << record[@line_protocol_key] if record.include?(@line_protocol_key)
+      else
+        time_formatted = _format_time(time)
+        point = InfluxDB2::Point
+                .new(name: measurement)
+        record.each_pair do |k, v|
+          if k.eql?(@time_key)
+            time_formatted = _format_time(v)
+          else
+            _parse_field(k, v, point)
+          end
+          point.add_tag('fluentd', tag) if @tag_fluentd
         end
-        point.add_tag('fluentd', tag) if @tag_fluentd
+        point.time(time_formatted, @precision)
+        points << point
       end
-      point.time(time_formatted, @precision)
-      points << point
     end
-    @write_api.write(data: points, bucket: bucket)
-    log.debug "Written points: #{points}"
+    if points.empty?
+      log.debug "Nothing to write for chunk: #{chunk.metadata}"
+    else
+      @write_api.write(data: points, bucket: bucket)
+      log.debug "Written points: #{points}"
+    end
   end
 
   private

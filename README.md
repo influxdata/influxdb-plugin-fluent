@@ -45,6 +45,7 @@ Store Fluentd event to InfluxDB 2 database.
 | field_cast_to_float | Turn on/off auto casting Integer value to Float. Helper to avoid mismatch error: 'series type mismatch: already Integer but got Float'. | bool | false |
 | time_precision | The time precision of timestamp. You should specify either second (s), millisecond (ms), microsecond (us), or nanosecond (ns). | String | ns |
 | time_key | A name of the record key that used as a 'timestamp' instead of event timestamp. If a record key doesn't exists or hasn't value then is used event timestamp. | String | nil |
+| line_protocol_key | A name of the record key that contains [LineProtocol](https://docs.influxdata.com/influxdb/v2.0/reference/syntax/line-protocol/). The value of this key is used for ingesting data into InfluxDB. If a record key doesn't exists or hasn't value then is used event timestamp. | String | nil |
 
 ##### Minimal configuration
 

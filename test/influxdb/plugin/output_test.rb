@@ -586,4 +586,39 @@ class InfluxDBOutputTest < Minitest::Test
     assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
                      times: 1, body: 'placeholder_h2o_tag level=2i,location="europe" 1444897215000000000')
   end
+
+  def test_line_protocol
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+      line_protocol_key lp_key
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'lp_key' => 'mem,tag=1 field=10 102030')
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'mem,tag=1 field=10 102030')
+  end
+
+  def test_line_protocol_not_defined
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      time_precision ns
+      line_protocol_key lp_key
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver)
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns', times: 0)
+  end
 end
