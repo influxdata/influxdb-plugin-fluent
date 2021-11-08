@@ -1,5 +1,9 @@
 ## 1.9.0 [unreleased]
 
+### Dependencies
+1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Update dependencies:
+    - influxdb-client to 2.1.0
+
 ### CI
 1. [#27](https://github.com/influxdata/influxdb-plugin-fluent/pull/27): Switch to next-gen CircleCI's convenience images
 
