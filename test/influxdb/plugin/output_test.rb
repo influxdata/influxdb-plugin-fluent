@@ -381,6 +381,82 @@ class InfluxDBOutputTest < Minitest::Test
                      times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1544897215000000000')
   end
 
+  def test_time_float
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_key time
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10',
+                             'time' => 1_544_897_215_000_000_000.123)
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1544897215000000000')
+  end
+
+  def test_time_key_rfc_3339_format
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_key time
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10',
+                             'time' => '2021-11-05T10:04:43.617216Z')
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1636106683617216000')
+  end
+
+  def test_time_key_log_format
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_key time
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10',
+                             'time' => '2021-11-05 09:15:49.487727165 +0000')
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1636103749487727104')
+  end
+
+  def test_time_key_not_parseable
+    stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
+      .to_return(status: 204)
+    driver = create_driver(%(
+      @type influxdb2
+      token my-token
+      bucket my-bucket
+      org my-org
+      tag_keys ["version"]
+      time_key time
+    ))
+    driver.run(default_tag: 'h2o_tag') do
+      emit_documents(driver, 'location' => 'europe', 'level' => 2, 'version' => 'v.10',
+                             'time' => '1544897215000000000')
+    end
+    assert_requested(:post, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns',
+                     times: 1, body: 'h2o_tag,version=v.10 level=2i,location="europe" 1544897215000000000')
+  end
+
   def test_field_cast_to_float
     stub_request(:any, 'https://localhost:8086/api/v2/write?bucket=my-bucket&org=my-org&precision=ns')
       .to_return(status: 204)

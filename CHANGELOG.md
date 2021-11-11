@@ -1,7 +1,15 @@
 ## 1.9.0 [unreleased]
 
+### Features
+1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Field value for `time_key` can be formatted date (`2021-11-05 09:15:49.487727165 +0000`, `2021-11-05T10:04:43.617216Z`)
+
+### Dependencies
+1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Update dependencies:
+    - influxdb-client to 2.1.0
+
 ### CI
 1. [#27](https://github.com/influxdata/influxdb-plugin-fluent/pull/27): Switch to next-gen CircleCI's convenience images
+1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Add Ruby 3.0 into CI
 
 ## 1.8.0 [2021-08-20]
 

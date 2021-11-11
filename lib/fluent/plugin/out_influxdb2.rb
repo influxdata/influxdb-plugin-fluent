@@ -121,18 +121,12 @@ class InfluxDBOutput < Fluent::Plugin::Output
     tag = chunk.metadata.tag
     bucket, measurement = expand_placeholders(chunk)
     chunk.msgpack_each do |time, record|
-      if time.is_a?(Integer)
-        time_formatted = time
-      else
-        nano_seconds = time.sec * 1e9
-        nano_seconds += time.nsec
-        time_formatted = @precision_formatter.call(nano_seconds)
-      end
+      time_formatted = _format_time(time)
       point = InfluxDB2::Point
               .new(name: measurement)
       record.each_pair do |k, v|
         if k.eql?(@time_key)
-          time_formatted = v
+          time_formatted = _format_time(v)
         else
           _parse_field(k, v, point)
         end
@@ -155,6 +149,27 @@ class InfluxDBOutput < Fluent::Plugin::Output
                     chunk.metadata.tag
                   end
     [bucket, measurement]
+  end
+
+  def _format_time(time)
+    if time.is_a?(Integer)
+      time
+    elsif time.is_a?(Float)
+      time
+    elsif time.is_a?(Fluent::EventTime)
+      nano_seconds = time.sec * 1e9
+      nano_seconds += time.nsec
+      @precision_formatter.call(nano_seconds)
+    elsif time.is_a?(String)
+      begin
+        _format_time(Fluent::EventTime.parse(time))
+      rescue StandardError => e
+        log.debug "Cannot parse timestamp: #{time} due: #{e}"
+        time
+      end
+    else
+      time
+    end
   end
 
   def _parse_field(key, value, point)
