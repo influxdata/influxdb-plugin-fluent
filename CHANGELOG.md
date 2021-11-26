@@ -1,4 +1,4 @@
-## 1.9.0 [unreleased]
+## 1.9.0 [2021-11-26]
 
 ### Features
 1. [#30](https://github.com/influxdata/influxdb-plugin-fluent/pull/30): Field value for `time_key` can be formatted date (`2021-11-05 09:15:49.487727165 +0000`, `2021-11-05T10:04:43.617216Z`)
