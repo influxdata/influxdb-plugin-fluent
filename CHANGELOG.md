@@ -1,5 +1,8 @@
 ## 1.10.0 [unreleased]
 
+### CI
+1. [#32](https://github.com/influxdata/influxdb-plugin-fluent/pull/32): Use new Codecov uploader for reporting code coverage
+
 ## 1.9.0 [2021-11-26]
 
 ### Features
