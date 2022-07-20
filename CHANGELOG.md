@@ -1,5 +1,9 @@
 ## 1.10.0 [unreleased]
 
+### Dependencies
+1. [#38](https://github.com/influxdata/influxdb-plugin-fluent/pull/38): Update dependencies:
+    - influxdb-client to 2.6.0
+
 ### CI
 1. [#32](https://github.com/influxdata/influxdb-plugin-fluent/pull/32): Use new Codecov uploader for reporting code coverage
 
