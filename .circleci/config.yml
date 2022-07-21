@@ -135,6 +135,9 @@ workflows:
           name: ruby-3.0
           ruby-image: "cimg/ruby:3.0"
       - tests-ruby:
+          name: ruby-3.1
+          ruby-image: "cimg/ruby:3.1"
+      - tests-ruby:
           name: ruby-2.6
       - tests-ruby:
           name: ruby-2.6-nightly
@@ -147,6 +150,8 @@ workflows:
           ruby-image: "cimg/ruby:2.4"
       - deploy-preview:
           requires:
+            - ruby-3.0
+            - ruby-3.1
             - ruby-2.7
             - ruby-2.6
             - ruby-2.6-nightly
