@@ -1,8 +1,8 @@
 ## 1.10.0 [unreleased]
 
 ### Dependencies
-1. [#38](https://github.com/influxdata/influxdb-plugin-fluent/pull/38): Update dependencies:
-    - influxdb-client to 2.6.0
+1. [#38](https://github.com/influxdata/influxdb-plugin-fluent/pull/40): Update dependencies:
+    - influxdb-client to 2.7.0
 
 ### CI
 1. [#39](https://github.com/influxdata/influxdb-plugin-fluent/pull/39): Add Ruby 3.1 into CI
