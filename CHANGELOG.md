@@ -1,13 +1,11 @@
 ## 1.10.0 [unreleased]
 
 ### Dependencies
-1. [#40](https://github.com/influxdata/influxdb-plugin-fluent/pull/40): Update dependencies:
-    - influxdb-client to 2.7.0
+1. [#42](https://github.com/influxdata/influxdb-plugin-fluent/pull/40): Update dependencies:
+    - influxdb-client to 2.8.0
 
 ### CI
 1. [#39](https://github.com/influxdata/influxdb-plugin-fluent/pull/39): Add Ruby 3.1 into CI
-
-### CI
 1. [#32](https://github.com/influxdata/influxdb-plugin-fluent/pull/32): Use new Codecov uploader for reporting code coverage
 
 ## 1.9.0 [2021-11-26]
