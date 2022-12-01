@@ -1,4 +1,4 @@
-## 1.10.0 [unreleased]
+## 1.10.0 [2022-12-01]
 
 ### Dependencies
 1. [#42](https://github.com/influxdata/influxdb-plugin-fluent/pull/40): Update dependencies:
