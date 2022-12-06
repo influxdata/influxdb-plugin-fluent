@@ -1,9 +1,13 @@
 ## 1.11.0 [unreleased]
 
+### Dependencies
+1. [#43](https://github.com/influxdata/influxdb-plugin-fluent/pull/43): Update dependencies:
+    - influxdb-client to 2.9.0
+
 ## 1.10.0 [2022-12-01]
 
 ### Dependencies
-1. [#42](https://github.com/influxdata/influxdb-plugin-fluent/pull/40): Update dependencies:
+1. [#42](https://github.com/influxdata/influxdb-plugin-fluent/pull/42): Update dependencies:
     - influxdb-client to 2.8.0
 
 ### CI
